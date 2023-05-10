@@ -4,7 +4,7 @@
 > Music Dataset consists of 25 columns, describing track_id, track_name, artist_name, album_names, genre, release_date, popularity, danceability, energy, key, loudness, mode, speechiness, acousticness, instrumentalness, liveness, valence, tempo, duration_ms, time_signature, lyrics, language, lyrics_sentiment, lyrics_subjectivity, lyrics_polarity.
 Feed these into a vector format to find a similar song by selecting a song from the existing dataset.
 
-Use cases:
+### Use cases:
 
 - Recommend user a song based on other interests.
 - Use database to write song lyrics in style of songs
@@ -13,12 +13,66 @@ Use cases:
 - Find similar songs based on audio features
 - Find similar songs based on both lyrics and audio features
 - Find songs with natural language search
+
+##  Features
+- [x] Create a vector database with Weaviate.io
+- [ ] Create SQL schema
+- [ ] Create a SQL database
+- [ ] Optimize Weaviate.io schema
+- [x] Create a frontend
+- [ ] Integrate Weaviate.io with frontend
+- [ ] Integrate SQL database with frontend
+- [ ] Semantic search with Weaviate.io
+- [ ] Keyword search with SQL
+- [ ] Similarity Search
+- [ ] Create a generative search engine
+- [ ] Integrate Spotify API
+
+# Paper
+- [ ] Compare Weaviate.io and SQL database
+
+# Requirements
+- Node.js
+- Docker
+- Python 3.8
+## Installation
+1. Install the requirements with
+```bash
+pip install -r requirements.txt
+```
+2. Download the dataset from [Kaggle](https://www.kaggle.com/datasets/imuhammad/audio-features-and-lyrics-of-spotify-songs)
+3. Unzip the dataset and place it in the `data` directory
+4. Clean the dataset with 
+```bash
+python3 clean_data.py
+```
+
+5. Start the Weaviate.io & vectorizer server with
+```bash
+docker-compose up
+```
+
+6. Import the dataset into Weaviate.io with
+```bash
+python import_data.py
+```
+
+## Usage
+1. Start the Weaviate.io & vectorizer server with
+```bash
+docker-compose up
+```
+
+2. Start the frontend with
+```bash
+cd frontend
+npm run dev
+```
+
+
 ## Dataset
 
 [Spotify Dataset](https://www.kaggle.com/datasets/imuhammad/audio-features-and-lyrics-of-spotify-songs)
-[Music Dataset : 1950 to 2019](https://www.kaggle.com/datasets/saurabhshahane/music-dataset-1950-to-2019)
-
-[Audio features and lyrics of Spotify songs](https://www.kaggle.com/datasets/imuhammad/audio-features-and-lyrics-of-spotify-songs)
 
 ## Databases
 Decide for a database that fits use case the best.
@@ -55,3 +109,7 @@ Decide for a database that fits use case the best.
 [Political news articles | Webz.io](https://webz.io/free-datasets/political-news-articles/)
 
 [Reddit Memes Dataset](https://www.kaggle.com/datasets/sayangoswami/reddit-memes-dataset)
+
+[Music Dataset : 1950 to 2019](https://www.kaggle.com/datasets/saurabhshahane/music-dataset-1950-to-2019)
+
+[Audio features and lyrics of Spotify songs](https://www.kaggle.com/datasets/imuhammad/audio-features-and-lyrics-of-spotify-songs)
