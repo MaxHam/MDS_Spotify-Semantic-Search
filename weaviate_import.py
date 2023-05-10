@@ -62,7 +62,7 @@ def import_data(client, data):
                 "tempo": d["tempo"],
                 "duration_ms": d["duration_ms"],
             }
-            client.batch.add_data_object(properties, "Songs")
+            client.batch.add_data_object(properties, "Track")
 
 def query(client):
     where_filter = {
@@ -76,7 +76,7 @@ def query(client):
 
     result = ( 
         client.query
-        .get("Songs", ["track_name", "track_artist", "track_popularity"])
+        .get("Track", ["track_name", "track_artist", "track_popularity"])
         .with_where(where_filter)
         .with_near_text(nearText)
         .with_limit(2)
@@ -90,7 +90,7 @@ def main(args):
     # delete_class(client, 'Track')
     # data = read_data()  
     # import_data(client, data)
-    query(client)
+    # query(client)
 
 
 

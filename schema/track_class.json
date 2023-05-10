@@ -7,7 +7,7 @@
             "moduleConfig": {
                 "text2vec-contextionary": {
                 "skip": false,
-                "vectorizePropertyName": false
+                "vectorizePropertyName": true
                 }
             }
         },
@@ -27,7 +27,7 @@
             "moduleConfig": {
                 "text2vec-contextionary": {
                 "skip": false,
-                "vectorizePropertyName": false
+                "vectorizePropertyName": true
                 }
             }
         },
@@ -37,17 +37,7 @@
             "moduleConfig": {
                 "text2vec-contextionary": {
                 "skip": false,
-                "vectorizePropertyName": false
-                }
-            }
-        },
-        {
-            "name": "lyrics",
-            "dataType": ["text"],
-            "moduleConfig": {
-                "text2vec-contextionary": {
-                "skip": false,
-                "vectorizePropertyName": false
+                "vectorizePropertyName": true
                 }
             }
         },
@@ -57,7 +47,7 @@
             "moduleConfig": {
                 "text2vec-contextionary": {
                 "skip": false,
-                "vectorizePropertyName": false
+                "vectorizePropertyName": true
                 }
             }
         },
@@ -67,7 +57,7 @@
             "moduleConfig": {
                 "text2vec-contextionary": {
                 "skip": false,
-                "vectorizePropertyName": false
+                "vectorizePropertyName": true
                 }
             }
         },
@@ -217,7 +207,7 @@
             "moduleConfig": {
                 "text2vec-contextionary": {
                 "skip": false,
-                "vectorizePropertyName": false
+                "vectorizePropertyName": true
                 }
             }
         },
@@ -237,7 +227,7 @@
             "moduleConfig": {
                 "text2vec-contextionary": {
                 "skip": true,
-                "vectorizePropertyName": false
+                "vectorizePropertyName": true
                 }
             }
         }

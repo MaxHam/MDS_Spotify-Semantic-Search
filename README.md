@@ -20,9 +20,9 @@ Feed these into a vector format to find a similar song by selecting a song from 
 - [ ] Create a SQL database
 - [x] Optimize Weaviate.io schema
 - [x] Create a frontend
-- [ ] Integrate Weaviate.io with frontend
+- [x] Integrate Weaviate.io with frontend
 - [ ] Integrate SQL database with frontend
-- [ ] Semantic search with Weaviate.io
+- [x] Semantic search with Weaviate.io
 - [ ] Keyword search with SQL
 - [ ] Similarity Search
 - [ ] Create a generative search engine
