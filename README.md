@@ -27,6 +27,8 @@ Feed these into a vector format to find a similar song by selecting a song from 
 - [ ] Similarity Search
 - [ ] Create a generative search engine
 - [ ] Integrate Spotify API
+- [ ] Dockerize frontend
+- [ ] Update docker-compose
 
 # Paper
 - [ ] Compare Weaviate.io and SQL database
