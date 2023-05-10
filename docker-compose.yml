@@ -1,22 +1,53 @@
+# version: '3.4'
+# services:
+#   weaviate:
+#     image: semitechnologies/weaviate:1.19.0
+#     restart: on-failure:0
+#     ports:
+#      - "8080:8080"
+#     environment:
+#       QUERY_DEFAULTS_LIMIT: 20
+#       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+#       PERSISTENCE_DATA_PATH: "./data"
+#       DEFAULT_VECTORIZER_MODULE: text2vec-transformers
+#       ENABLE_MODULES: text2vec-transformers
+#       TRANSFORMERS_INFERENCE_API: http://t2v-transformers:8080
+#       CLUSTER_HOSTNAME: 'node1'
+#   t2v-transformers:
+#     image: semitechnologies/transformers-inference:sentence-transformers-multi-qa-MiniLM-L6-cos-v1
+#     environment:
+#       ENABLE_CUDA: 0 # set to 1 to enable
+---
 version: '3.4'
 services:
   weaviate:
-    volumes:
-    - /var/weaviate:/var/lib/weaviate
+    command:
+    - --host
+    - 0.0.0.0
+    - --port
+    - '8080'
+    - --scheme
+    - http
     image: semitechnologies/weaviate:1.19.0
-    restart: on-failure:0
     ports:
-     - "8080:8080"
+    - 8080:8080
+    restart: on-failure:0
     environment:
-      QUERY_DEFAULTS_LIMIT: 20
+      CONTEXTIONARY_URL: contextionary:9999
+      QUERY_DEFAULTS_LIMIT: 25
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
-      PERSISTENCE_DATA_PATH: "./data"
-      DEFAULT_VECTORIZER_MODULE: text2vec-transformers
-      ENABLE_MODULES: text2vec-transformers
-      TRANSFORMERS_INFERENCE_API: http://t2v-transformers:8080
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      DEFAULT_VECTORIZER_MODULE: 'text2vec-contextionary'
+      ENABLE_MODULES: 'text2vec-contextionary'
       CLUSTER_HOSTNAME: 'node1'
-  t2v-transformers:
-    image: semitechnologies/transformers-inference:sentence-transformers-multi-qa-MiniLM-L6-cos-v1
+  contextionary:
     environment:
-      ENABLE_CUDA: 0 # set to 1 to enable
-      # NVIDIA_VISIBLE_DEVICES: all # enable if running with CUDA
+      OCCURRENCE_WEIGHT_LINEAR_FACTOR: 0.75
+      EXTENSIONS_STORAGE_MODE: weaviate
+      EXTENSIONS_STORAGE_ORIGIN: http://weaviate:8080
+      NEIGHBOR_OCCURRENCE_IGNORE_PERCENTILE: 5
+      ENABLE_COMPOUND_SPLITTING: 'false'
+    image: semitechnologies/contextionary:en0.16.0-v1.0.2
+    ports:
+    - 9999:9999
+...
