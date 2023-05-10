@@ -1,0 +1,246 @@
+{
+    "class": "Track",
+    "properties": [
+        {
+            "name": "track_name",
+            "dataType": ["text"],
+            "moduleConfig": {
+                "text2vec-contextionary": {
+                "skip": false,
+                "vectorizePropertyName": false
+                }
+            }
+        },
+        {
+            "name": "track_id",
+            "dataType": ["text"],
+            "moduleConfig": {
+                "text2vec-contextionary": {
+                "skip": true,
+                "vectorizePropertyName": false
+                }
+            }
+        },
+        {
+            "name": "track_artist",
+            "dataType": ["text"],
+            "moduleConfig": {
+                "text2vec-contextionary": {
+                "skip": false,
+                "vectorizePropertyName": false
+                }
+            }
+        },
+        {
+            "name": "lyrics",
+            "dataType": ["text"],
+            "moduleConfig": {
+                "text2vec-contextionary": {
+                "skip": false,
+                "vectorizePropertyName": false
+                }
+            }
+        },
+        {
+            "name": "lyrics",
+            "dataType": ["text"],
+            "moduleConfig": {
+                "text2vec-contextionary": {
+                "skip": false,
+                "vectorizePropertyName": false
+                }
+            }
+        },
+        {
+            "name": "subgenre",
+            "dataType": ["text"],
+            "moduleConfig": {
+                "text2vec-contextionary": {
+                "skip": false,
+                "vectorizePropertyName": false
+                }
+            }
+        },
+        {
+            "name": "genre",
+            "dataType": ["text"],
+            "moduleConfig": {
+                "text2vec-contextionary": {
+                "skip": false,
+                "vectorizePropertyName": false
+                }
+            }
+        },
+        {
+            "name": "track_popularity",
+            "dataType": ["number"],
+            "moduleConfig": {
+                "text2vec-contextionary": {
+                "skip": true,
+                "vectorizePropertyName": false
+                }
+            }
+        },
+        {
+            "name": "danceability",
+            "dataType": ["number"],
+            "moduleConfig": {
+                "text2vec-contextionary": {
+                "skip": true,
+                "vectorizePropertyName": false
+                }
+            }
+        },
+         {
+            "name": "energy",
+            "dataType": ["number"],
+            "moduleConfig": {
+                "text2vec-contextionary": {
+                "skip": true,
+                "vectorizePropertyName": false
+                }
+            }
+        },
+         {
+            "name": "key",
+            "dataType": ["number"],
+            "moduleConfig": {
+                "text2vec-contextionary": {
+                "skip": true,
+                "vectorizePropertyName": false
+                }
+            }
+        },
+         {
+            "name": "loudness",
+            "dataType": ["number"],
+            "moduleConfig": {
+                "text2vec-contextionary": {
+                "skip": true,
+                "vectorizePropertyName": false
+                }
+            }
+        },
+         {
+            "name": "mode",
+            "dataType": ["number"],
+            "moduleConfig": {
+                "text2vec-contextionary": {
+                "skip": true,
+                "vectorizePropertyName": false
+                }
+            }
+        },
+         {
+            "name": "speechiness",
+            "dataType": ["number"],
+            "moduleConfig": {
+                "text2vec-contextionary": {
+                "skip": true,
+                "vectorizePropertyName": false
+                }
+            }
+        },
+         {
+            "name": "acousticness",
+            "dataType": ["number"],
+            "moduleConfig": {
+                "text2vec-contextionary": {
+                "skip": true,
+                "vectorizePropertyName": false
+                }
+            }
+        },
+        {
+            "name": "instrumentalness",
+            "dataType": ["number"],
+            "moduleConfig": {
+                "text2vec-contextionary": {
+                "skip": true,
+                "vectorizePropertyName": false
+                }
+            }
+        },
+        {
+            "name": "liveness",
+            "dataType": ["number"],
+            "moduleConfig": {
+                "text2vec-contextionary": {
+                "skip": true,
+                "vectorizePropertyName": false
+                }
+            }
+        },
+        {
+            "name": "valence",
+            "dataType": ["number"],
+            "moduleConfig": {
+                "text2vec-contextionary": {
+                "skip": true,
+                "vectorizePropertyName": false
+                }
+            }
+        },
+        {
+            "name": "tempo",
+            "dataType": ["number"],
+            "moduleConfig": {
+                "text2vec-contextionary": {
+                "skip": true,
+                "vectorizePropertyName": false
+                }
+            }
+        },
+        {
+            "name": "duration_ms",
+            "dataType": ["number"],
+            "moduleConfig": {
+                "text2vec-contextionary": {
+                "skip": true,
+                "vectorizePropertyName": false
+                }
+            }
+        },
+        {
+            "name": "language",
+            "dataType": ["text"],
+            "moduleConfig": {
+                "text2vec-contextionary": {
+                "skip": false,
+                "vectorizePropertyName": false
+                }
+            }
+        },
+        {
+            "name": "album_name",
+            "dataType": ["text"],
+            "moduleConfig": {
+                "text2vec-contextionary": {
+                "skip": false,
+                "vectorizePropertyName": false
+                }
+            }
+        },
+        {
+            "name": "album_id",
+            "dataType": ["text"],
+            "moduleConfig": {
+                "text2vec-contextionary": {
+                "skip": true,
+                "vectorizePropertyName": false
+                }
+            }
+        },
+        {
+            "name": "album_release_date",
+            "dataType": ["date"],
+            "moduleConfig": {
+                "text2vec-contextionary": {
+                "skip": true,
+                "vectorizePropertyName": false
+                }
+            }
+        }
+    ],
+    "text2vec-contextionary": "text2vec-contextionary"
+}

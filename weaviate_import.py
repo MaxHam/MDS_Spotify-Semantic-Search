@@ -6,13 +6,16 @@ def init_client():
         url="http://localhost:8080",  # Replace with your endpoint
     )
 
-    class_obj = {
-        "class": "Songs",
-        "vectorizer": "text2vec-contextionary" #  runs in docker-compose
-    }
+    # Import class schemas
+    with open("schema/track_class.json", "r") as f:
+        track_class_obj = json.load(f)
+    # Create classes
+    classes = [track_class_obj]
 
+    # Create classes
     try:
-        client.schema.create_class(class_obj)
+        for c in classes:
+            client.schema.create_class(c)
     except:
         print("class already exists")
     
@@ -31,9 +34,9 @@ def import_data(client, data):
     # Configure a batch process
     with client.batch as batch:
         batch.batch_size=100
-        # Batch import all Questions
+        # Batch import all tracks
         for i, d in enumerate(data):
-            print(f"importing song: {i+1}")
+            print(f"importing track: {i+1}")
 
             properties = {
                 "track_name": d["track_name"],
@@ -41,11 +44,9 @@ def import_data(client, data):
                 "track_id": d["track_id"],
                 "lyrics": d["lyrics"],
                 "track_popularity": d["track_popularity"],
-                "track_album_id": d["track_album_id"],
-                "track_album_name": d["track_album_name"],
-                "track_album_release_date": d["track_album_release_date"],
-                "playlist_name": d["playlist_name"],
-                "playlist_id": d["playlist_id"],
+                "album_id": d["track_album_id"],
+                "album_name": d["track_album_name"],
+                "album_release_date": d["track_album_release_date"],
                 "genre": d["playlist_genre"],
                 "subgenre": d["playlist_subgenre"],
                 "danceability": d["danceability"],
@@ -64,21 +65,21 @@ def import_data(client, data):
             client.batch.add_data_object(properties, "Songs")
 
 def query(client):
-    # where_filter = {
-    #     "path": ["track_id"],
-    #     "operator": "Equal",
-    #     "valueString": "1AhDOtG9vPSOmsWgNW0BEY"
-    # }
+    where_filter = {
+        "path": ["track_popularity"],
+        "operator": "GreaterThan",
+        "valueNumber": "80"
+    }
     nearText = {
-        "concepts": ["mama"],
+        "concepts": ["Galileo"],
     }  
 
     result = ( 
         client.query
-        .get("Songs", ["lyrics"])
+        .get("Songs", ["track_name", "track_artist", "track_popularity"])
+        .with_where(where_filter)
         .with_near_text(nearText)
-        # .with_where(where_filter)
-        .with_limit(10)
+        .with_limit(2)
         .do()
     )
 
@@ -86,9 +87,9 @@ def query(client):
 
 def main(args):
     client = init_client()
-    delete_class(client, 'Songs')
-    data = read_data()  
-    import_data(client, data)
+    # delete_class(client, 'Track')
+    # data = read_data()  
+    # import_data(client, data)
     query(client)
 
 

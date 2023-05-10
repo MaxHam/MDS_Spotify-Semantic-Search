@@ -18,7 +18,7 @@ Feed these into a vector format to find a similar song by selecting a song from 
 - [x] Create a vector database with Weaviate.io
 - [ ] Create SQL schema
 - [ ] Create a SQL database
-- [ ] Optimize Weaviate.io schema
+- [x] Optimize Weaviate.io schema
 - [x] Create a frontend
 - [ ] Integrate Weaviate.io with frontend
 - [ ] Integrate SQL database with frontend
