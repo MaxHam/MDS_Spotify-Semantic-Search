@@ -68,12 +68,38 @@ app.get('/auth/callback', (req, res) => {
       res.redirect('/')
     }
   });
-
 })
+
+
 
 app.get('/auth/token', (req, res) => {
   res.json({ access_token: access_token})
 })
+
+app.get('/auth/refresh_token', function(req, res) {
+
+  // requesting access token from refresh token
+  var refresh_token = req.query.refresh_token;
+  var authOptions = {
+    url: 'https://accounts.spotify.com/api/token',
+    headers: { 'Authorization': 'Basic ' + (new Buffer(spotify_client_id + ':' + spotify_client_secret).toString('base64')) },
+    form: {
+      grant_type: 'refresh_token',
+      refresh_token: refresh_token
+    },
+    json: true
+  };
+
+  request.post(authOptions, function(error, response, body) {
+    if (!error && response.statusCode === 200) {
+      var access_token = body.access_token;
+      res.send({
+        'access_token': access_token
+      });
+    }
+  });
+});
+
 
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`)

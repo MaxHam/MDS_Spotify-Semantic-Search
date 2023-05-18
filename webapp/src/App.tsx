@@ -11,7 +11,9 @@ function App() {
   const retrieveToken = async() => {
     try {
       const token = await getToken()
-      setToken(token);
+      if(token) {
+        setToken(token);
+      }
     }
     catch(error) {
       console.log(error);
@@ -21,6 +23,8 @@ function App() {
   useEffect(() => {
     retrieveToken();
   }, []);
+
+  console.log(token);
 
   return (
     <>

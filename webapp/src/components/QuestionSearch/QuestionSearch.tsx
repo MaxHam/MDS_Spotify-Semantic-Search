@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './Search.css';
+import './QuestionSearch.css';
 
 interface ISearch {
     value?: string;
@@ -11,15 +11,21 @@ const Search: React.FC<ISearch> = (props) => {
     const [searchTerm, setSearchTerm] = useState<string>(value || "")
     const handleChange = async(event: any) => {
         setSearchTerm(event.target.value);
+    }
+    const handleSubmit = async(event: any) => {
+        event.preventDefault();
+        if(searchTerm=== "" || !searchTerm) {
+            return;
+        }
         onChange(searchTerm);
     }
-
     return (
         <>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <label>
-                    <input className='search-input' placeholder=' Search for a track' type="text" value={searchTerm} onChange={handleChange} />
+                    <input className='question-search-input' placeholder='What is love?' type="text" value={searchTerm} onChange={handleChange} />
                 </label>
+                <input className='submit-input' type="submit" value="Submit" />
             </form>
         </>
     );

@@ -40,3 +40,10 @@
 .read-the-docs {
   color: #888;
 }
+
+h1,h2,h3 {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  /* left align */
+  text-align: left;
+}
