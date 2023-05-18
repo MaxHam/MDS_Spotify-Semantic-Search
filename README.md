@@ -115,3 +115,14 @@ Decide for a database that fits use case the best.
 [Music Dataset : 1950 to 2019](https://www.kaggle.com/datasets/saurabhshahane/music-dataset-1950-to-2019)
 
 [Audio features and lyrics of Spotify songs](https://www.kaggle.com/datasets/imuhammad/audio-features-and-lyrics-of-spotify-songs)
+
+
+
+# Arguments for Weaviate.io
+## Pros
+- do not have to worry about data types
+
+## Cons
+- hard to integrate complex class structure, because of cross references
+- no keyword search
+# Arguments for SQL

@@ -35,6 +35,9 @@ def read_data():
     return data
 
 def import_data(client, data):
+
+    # flush the schema and data
+    client.schema.delete_all()
     # cut data
     # data = data[:10]
 
@@ -46,10 +49,10 @@ def import_data(client, data):
             print(f"importing track: {i+1}")
 
             track_properties = {
-                "name": d["track_name"],
+                "track_name": d["track_name"],
                 "track_id": d["track_id"],
                 "lyrics": d["lyrics"],
-                "popularity": d["track_popularity"],
+                "track_popularity": d["track_popularity"],
                 "genre": d["playlist_genre"],
                 "subgenre": d["playlist_subgenre"],
                 "danceability": d["danceability"],
@@ -64,10 +67,10 @@ def import_data(client, data):
                 "valence": d["valence"],
                 "tempo": d["tempo"],
                 "duration_ms": d["duration_ms"],
-                "album": d["track_album_name"],
+                "album_name": d["track_album_name"],
                 "album_id": d["track_album_id"],
-                "releas_date": d["track_album_release_date"],
-                "artist": d["track_artist"]
+                "album_release_date": d["track_album_release_date"],
+                "artist_name": d["track_artist"]
                 }
 
             # artist_properties = {
@@ -96,8 +99,8 @@ def query(client):
 
     result = ( 
         client.query
-        .get("Track", ["name", "lyrics", "popularity"])
-        .with_where(where_filter)
+        .get("Track", ["track_name"])
+        # .with_where(where_filter)
         .with_near_text(nearText)
         .with_limit(2)
         .do()
@@ -108,7 +111,7 @@ def query(client):
 def ask(client):
     ask = {
         "question": "Ariana Grande?",
-        "properties": ["lyrics", "name"],
+        "properties": ["name"],
     }
 
     result = (
@@ -122,13 +125,10 @@ def ask(client):
 
 def main(args):
     client = init_client()
-    for c in classes:
-        delete_class(client, c)
-
-    data = read_data()  
-    import_data(client, data)
+    # data = read_data()
+    # import_data(client, data)
     query(client)
-    ask(client)
+    # ask(client)
 
 
 
