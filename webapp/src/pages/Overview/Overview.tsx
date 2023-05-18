@@ -5,6 +5,7 @@ import Track from '../../components/Track/Track';
 import { ITrack } from '../../interfaces/Track';
 import Search from '../../components/Search/Search';
 import QuestionSearch from '../../components/QuestionSearch/QuestionSearch';
+import AudioPlayer from '../../components/AudioPlayer/AudioPlayer';
 
 interface OverviewProps {
   token: string
@@ -13,11 +14,16 @@ interface OverviewProps {
 function Overview(props:OverviewProps) {
   const { token } = props;
   const [tracks, setTracks] = useState<ITrack[]>([])
+  const [selectedTrack, setSelectedTrack] = useState<ITrack | null>(tracks[0] || null)
   // False := Search, True := QuestionSearch
   const [mode, setMode] = useState<boolean>(false)
 
   const handleModeSwitch = () => {
     setMode(!mode);
+  }
+
+  const handleSelectTrack = (track: ITrack) => {
+    setSelectedTrack(track);
   }
 
   useEffect(() => {
@@ -38,7 +44,6 @@ function Overview(props:OverviewProps) {
     catch(error) {
       console.log(error);
     }
-
   }
 
   return (
@@ -61,14 +66,17 @@ function Overview(props:OverviewProps) {
         <h3>Ask questions about songs</h3>
         <QuestionSearch onChange={handleChange} />
           </div>}
-    
-      <div className="grid-container">
+    <div className='main'>
+    <div className="grid-container">
           {tracks.map((track) => (
             <div className="grid-item">
-             <Track key={track.track_id} token={token} {...track} />
+             <Track key={track.track_id} token={token} onSelect={handleSelectTrack} track={track} selected={track.track_id === selectedTrack?.track_id}/>
             </div>
           ))}
       </div>
+      {selectedTrack && <AudioPlayer track={selectedTrack}  token={token} />}
+    </div>
+      
     </>
   )
 }

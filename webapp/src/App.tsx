@@ -24,8 +24,6 @@ function App() {
     retrieveToken();
   }, []);
 
-  console.log(token);
-
   return (
     <>
         { (token === '') ? <Login/> : <Overview token={token} /> }

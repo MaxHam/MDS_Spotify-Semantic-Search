@@ -1,14 +1,18 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getAlbum } from '../../api/spotify';
 import { ITrack } from '../../interfaces/Track';
 import './Track.css';
 
-interface TrackProps extends ITrack {
+interface TrackProps {
+    track: ITrack;
     token: string;
+    onSelect: (track: ITrack) => void;
+    selected?: boolean;
 }
 
 const Track: React.FC<TrackProps> = (props) => {
-    const { track_name, artist_name, album_name, album_id, token } = props;
+    const { token, onSelect, track, selected } = props;
+    const { track_name, artist_name, album_name, album_id } = track;
     const [albumArt, setAlbumArt] = useState<string>('');
 
     useEffect(() => {
@@ -25,9 +29,13 @@ const Track: React.FC<TrackProps> = (props) => {
         getAlbumArt()
     }, [album_id,token]);
 
+    const handleClick = () => { 
+        onSelect(track);
+    }
+
 
     return (
-        <div className='track'>
+        <button onClick={handleClick} className={`track ${selected && 'selected'}`}>
             <img className='album-art' src={albumArt} alt={album_name} />
 
             <div className='track_info-container'>
@@ -36,7 +44,7 @@ const Track: React.FC<TrackProps> = (props) => {
                 </span>
             </div>
 
-        </div>
+        </button>
     );
 };
 
