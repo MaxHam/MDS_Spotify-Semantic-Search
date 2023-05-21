@@ -67,7 +67,7 @@ docker-compose up
 
 2. Start the frontend with
 ```bash
-cd frontend
+cd webapp
 npm run dev
 ```
 
