@@ -6,7 +6,7 @@
 
 .grid-container {
   display: grid;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: repeat(4, 1fr);
   padding: 10px;
   margin-bottom: 5em;
 }
@@ -113,4 +113,8 @@ input:checked + .slider:before {
   align-items:flex-start;
   justify-content: space-between;
   margin-bottom: 5rem;
+}
+
+.search-duration {
+  text-align: left;
 }

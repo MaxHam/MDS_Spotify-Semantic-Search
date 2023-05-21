@@ -7,6 +7,16 @@ const client: WeaviateClient = weaviate.client({
   host: 'localhost:8080',  // Replace with your endpoint
 });
 
+// measure time of execution
+const measure = async (fn: any) => {
+    const start = Date.now();
+    const res = await fn();
+    const end = Date.now();
+    console.log(`Execution time: ${end - start}ms`);
+
+    const duration = end - start;
+    return [res, duration];
+}
 
 const ask = async(question: string, limit=16) => {
     const withAsk = {
@@ -60,5 +70,5 @@ const getAllTracks = async(limit=16):Promise<any[]> => {
     return [];
 }
 
-export { getNearText, getAllTracks, ask };
+export { getNearText, getAllTracks, ask, measure };
 export default client;
