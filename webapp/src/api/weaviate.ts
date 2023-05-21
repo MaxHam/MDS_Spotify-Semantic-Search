@@ -39,7 +39,6 @@ const getNearText = async(texts: string[], limit=16) => {
             .withLimit(limit)
             .do();
 
-            console.log(res.data.Get.Track);
             return res.data.Get.Track;
     } catch (error) {
         console.error(error)

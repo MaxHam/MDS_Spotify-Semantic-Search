@@ -125,9 +125,9 @@ def ask(client):
 
 def main(args):
     client = init_client()
-    # data = read_data()
-    # import_data(client, data)
-    query(client)
+    data = read_data()
+    import_data(client, data)
+    # query(client)
     # ask(client)
 
 

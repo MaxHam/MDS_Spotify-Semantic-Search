@@ -6,6 +6,7 @@ import { ITrack } from '../../interfaces/Track';
 import Search from '../../components/Search/Search';
 import QuestionSearch from '../../components/QuestionSearch/QuestionSearch';
 import AudioPlayer from '../../components/AudioPlayer/AudioPlayer';
+import TrackInfo from '../../components/TrackInfo/TrackInfo';
 
 interface OverviewProps {
   token: string
@@ -59,23 +60,26 @@ function Overview(props:OverviewProps) {
         <span className="mode">Question</span>
         </div>  
       </div>
-      {!mode ? <div>
-        <h3>Query tracks by their semantic lyric similarity to the search term</h3>
-        <Search onChange={handleChange} />
-        </div> :   <div>
-        <h3>Ask questions about songs</h3>
-        <QuestionSearch onChange={handleChange} />
-          </div>}
     <div className='main'>
-    <div className="grid-container">
-          {tracks.map((track) => (
-            <div className="grid-item">
-             <Track key={track.track_id} token={token} onSelect={handleSelectTrack} track={track} selected={track.track_id === selectedTrack?.track_id}/>
-            </div>
-          ))}
-      </div>
-      {selectedTrack && <AudioPlayer track={selectedTrack}  token={token} />}
+      <div className='overview'>
+      {!mode ? <div className='search-bar'>
+          <h3>Query tracks by their semantic lyric similarity to the search term</h3>
+          <Search onChange={handleChange} />
+          </div> :   <div>
+          <h3>Ask questions about songs</h3>
+          <QuestionSearch onChange={handleChange} />
+            </div>}
+        <div className="grid-container">
+              {tracks.map((track) => (
+                <div className="grid-item">
+                <Track key={track.track_id} token={token} onSelect={handleSelectTrack} track={track} selected={track.track_id === selectedTrack?.track_id}/>
+                </div>
+              ))}
+          </div>
+        </div>
+        {selectedTrack && <TrackInfo track={selectedTrack} token={token} onSelect={handleSelectTrack} />}
     </div>
+    {selectedTrack && <AudioPlayer track={selectedTrack}  token={token} />}
       
     </>
   )

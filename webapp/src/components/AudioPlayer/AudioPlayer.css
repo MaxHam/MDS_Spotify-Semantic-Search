@@ -1,21 +1,10 @@
 .audio-player {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 250px;
-    /* height: 100%; */
-    background-color: #2f2d31;
-    margin-top: 10px;
-    padding: 10px;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    text-overflow: ellipsis;
-}
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
 
-.lyrics {
-    margin-top: 10px;
-    padding: 10px;
-    background-color: #2f2d31;
-    text-align: left;
+    .slider::before, button[aria-label="Previous"], button[aria-label="Next"], .rswp_duration, .rswp_progress  {
+        display:none;
+    }
 }

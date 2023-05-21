@@ -11,7 +11,6 @@ async function getToken() {
   }
 
 const getAlbum = async (id: string, token: string) => {
-    console.log(token)
     try {
         const data = await axios.get(`https://api.spotify.com/v1/albums/${id}`, {
             headers: {
