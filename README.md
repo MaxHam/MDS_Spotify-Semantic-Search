@@ -56,7 +56,7 @@ docker-compose up
 
 6. Import the dataset into Weaviate.io with
 ```bash
-python import_data.py
+python weaviate_import.py
 ```
 
 7. Clean the dataset with clean_sql_data and create the required .sql script
@@ -64,7 +64,7 @@ python import_data.py
 python clean_sql_data.py
 ```
 
-7. Upload the dataset to the sql server
+8. Upload the dataset to the sql server
 ```bash
 python sql_import.py
 ```
