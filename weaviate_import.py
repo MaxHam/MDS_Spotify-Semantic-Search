@@ -5,7 +5,7 @@ classes= ['Track']#, 'Artist', 'Album']
 
 def init_client():
     client = weaviate.Client(
-        url="http://localhost:8080",  # Replace with your endpoint
+        url="http://localhost:8081",  # Replace with your endpoint
     )
 
     # Import class schemas
