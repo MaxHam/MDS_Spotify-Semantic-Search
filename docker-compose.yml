@@ -62,7 +62,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: myDatabase
+      MYSQL_DATABASE: spotifyDataset
       MYSQL_USER: root
       MYSQL_PASSWORD: root
     ports:
