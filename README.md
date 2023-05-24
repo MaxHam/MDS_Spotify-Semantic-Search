@@ -67,7 +67,7 @@ docker-compose up
 
 2. Start the frontend with
 ```bash
-cd frontend
+cd webapp
 npm run dev
 ```
 
@@ -105,6 +105,7 @@ Decide for a database that fits use case the best.
 
 - [https://www.kaggle.com/code/nikil42516/plot-based-music-recommender-system](https://www.kaggle.com/code/nikil42516/plot-based-music-recommender-system)
 - [https://dev.mysql.com/doc/refman/8.0/en/fulltext-search.html](https://dev.mysql.com/doc/refman/8.0/en/fulltext-search.html)
+- https://github.com/sheacon/semantic_song_search/blob/main/research_paper_v1.pdf
 
 ### Other interesting datasets
 
@@ -115,3 +116,14 @@ Decide for a database that fits use case the best.
 [Music Dataset : 1950 to 2019](https://www.kaggle.com/datasets/saurabhshahane/music-dataset-1950-to-2019)
 
 [Audio features and lyrics of Spotify songs](https://www.kaggle.com/datasets/imuhammad/audio-features-and-lyrics-of-spotify-songs)
+
+
+
+# Arguments for Weaviate.io
+## Pros
+- do not have to worry about data types
+- exploratory search
+## Cons
+- hard to integrate complex class structure, because of cross references
+- no keyword search
+# Arguments for SQL

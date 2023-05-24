@@ -1,0 +1,10 @@
+.audio-player {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+
+    .slider::before, button[aria-label="Previous"], button[aria-label="Next"], .rswp_duration, .rswp_progress  {
+        display:none;
+    }
+}
