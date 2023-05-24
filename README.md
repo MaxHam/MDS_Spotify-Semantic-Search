@@ -59,6 +59,16 @@ docker-compose up
 python import_data.py
 ```
 
+7. Clean the dataset with clean_sql_data and create the required .sql script
+```bash
+python clean_sql_data.py
+```
+
+7. Upload the dataset to the sql server
+```bash
+python sql_import.py
+```
+
 ## Usage
 1. Start the Weaviate.io & vectorizer server with
 ```bash
