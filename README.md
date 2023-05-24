@@ -49,7 +49,7 @@ pip install -r requirements.txt
 python3 clean_data.py
 ```
 
-5. Start the Weaviate.io & vectorizer server with
+5. First time using this project create the Weaviate.io & vectorizer server containers with
 ```bash
 docker-compose up
 ```
@@ -62,7 +62,7 @@ python import_data.py
 ## Usage
 1. Start the Weaviate.io & vectorizer server with
 ```bash
-docker-compose up
+docker-compose start
 ```
 
 2. Start the frontend with
