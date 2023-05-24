@@ -1,16 +1,17 @@
-# Use root/example as user/password credentials
-version: '3.1'
+# Use the official MariaDB image as base
+FROM mariadb:latest
 
-services:
+# Environment variables for the MariaDB server
+ENV MYSQL_ROOT_PASSWORD=root
+ENV MYSQL_DATABASE=myDatabase
+ENV MYSQL_USER=root
+ENV MYSQL_PASSWORD=root
 
-  db:
-    image: mariadb
-    restart: always
-    environment:
-      MARIADB_ROOT_PASSWORD: root
+# Expose the MySQL/MariaDB port
+EXPOSE 3306
 
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
+# Initialize the database
+#COPY ./scripts/ 
+
+# Start the MariaDB server
+CMD ["mysqld"]
