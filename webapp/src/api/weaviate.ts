@@ -4,7 +4,7 @@ const graphqlQuery = 'track_name artist_name track_id album_name duration_ms lyr
 
 const client: WeaviateClient = weaviate.client({
   scheme: 'http',
-  host: 'localhost:8080',  // Replace with your endpoint
+  host: 'localhost:8081',  // Replace with your endpoint
 });
 
 // measure time of execution
