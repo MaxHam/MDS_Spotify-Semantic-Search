@@ -16,8 +16,9 @@ Feed these into a vector format to find a similar song by selecting a song from 
 
 ##  Features
 - [x] Create a vector database with Weaviate.io
-- [ ] Create SQL schema
-- [ ] Create a SQL database
+- [x] Create SQL schema
+- [x] Create a SQL database
+- [ ] Create index in the SQL database
 - [x] Optimize Weaviate.io schema
 - [x] Create a frontend
 - [x] Integrate Weaviate.io with frontend
@@ -78,6 +79,7 @@ docker-compose start
 2. Start the frontend with
 ```bash
 cd webapp
+npm install
 npm run dev
 ```
 
