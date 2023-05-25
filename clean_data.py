@@ -5,8 +5,6 @@ import weaviate
 def main(args):
     # import csv
     df = pd.read_csv(args.import_file)
-    # check for duplicate track_id
-    # print(f"Before Cleaning: Number of duplicate track_id: {df.duplicated(subset='track_id').sum()}")
     # clean data
     df = df.dropna()
     # drop duplicate track_id

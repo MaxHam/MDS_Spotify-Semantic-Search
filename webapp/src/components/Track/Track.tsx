@@ -35,7 +35,7 @@ const Track: React.FC<TrackProps> = (props) => {
 
 
     return (
-        <button onClick={handleClick} className={`track ${selected && 'selected'}`}>
+        <button onClick={handleClick} className={`track ${selected ? 'selected' : ''}`}>
             <img className='album-art' src={albumArt} alt={album_name} />
 
             <div className='track_info-container'>

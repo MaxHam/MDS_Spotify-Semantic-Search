@@ -56,7 +56,7 @@ services:
   maria-db:
     build:
       context: .
-      dockerfile: dockerfile
+      dockerfile: Dockerfile
     volumes:
       - db_data:/var/lib/mysql
     restart: always
@@ -67,8 +67,6 @@ services:
       MYSQL_PASSWORD: root
     ports:
       - "3306:3306"
-
 volumes:
   db_data: {}
-
 ...

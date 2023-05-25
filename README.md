@@ -25,14 +25,53 @@ Feed these into a vector format to find a similar song by selecting a song from 
 - [ ] Integrate SQL database with frontend
 - [x] Semantic search with Weaviate.io
 - [ ] Keyword search with SQL
-- [ ] Similarity Search
+- [x] Similarity Search
 - [ ] Create a generative search engine
-- [ ] Integrate Spotify API
+- [x] Integrate Spotify API
 - [ ] Dockerize frontend
 - [ ] Update docker-compose
 
 # Paper
-- [ ] Compare Weaviate.io and SQL database
+## Outline
+1. Introduction
+    - Motivation
+    - Use case
+    - Features
+    - Dataset
+    - Outline
+2. Project
+    - Use case
+    - Architecture
+    - Implementation
+3. Data
+    - Dataset
+    - data cleaning
+    - data schema
+4. Weaviate as Vector Database
+    - General
+    - Semantic Search
+        - how it works
+    - Similarity recommendation
+        - how it works
+    
+3. Discussion Database comparison
+    - compare SQL vs. Weaviate
+    - compare use case
+    - compare speed
+    - compare maintainability
+        - migration
+    - compare scalability
+        - horizontal vs vertical
+    - compare complexity
+    - compare cost
+    - compare flexibility
+5. Conclusion
+    - Summary
+    - Future work
+    - Limitations
+    - Outlook
+
+
 
 # Requirements
 - Node.js
@@ -70,8 +109,16 @@ python clean_sql_data.py
 python sql_import.py
 ```
 
+9. Create an `.env` file in the `webapp` directory with the following content
+```bash
+SPOTIFY_CLIENT_ID=your_spotify_client_id
+SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
+PORT=5001
+```
+
+
 ## Usage
-1. Start the Weaviate.io & vectorizer server with
+1. Start the databases and modules with
 ```bash
 docker-compose start
 ```

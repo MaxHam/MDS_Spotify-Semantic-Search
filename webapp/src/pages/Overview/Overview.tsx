@@ -80,8 +80,6 @@ function Overview(props:OverviewProps) {
         <span className="mode">Question</span>
         </div>  
       </div>
-    <div className='main'>
-      <div className='overview'>
       {!mode ? 
       <div className='search-bar'>
           <h3>Query tracks by their semantic lyric similarity to the search term</h3>
@@ -92,8 +90,11 @@ function Overview(props:OverviewProps) {
           <QuestionSearch onChange={handleQuestionChange} /> 
         </div>
         }
-        <span className='search-duration'>{searchDuration ? `${searchDuration}ms`: ""}</span>
-        <div className="grid-container">
+      <span className='search-duration'>{searchDuration ? `${searchDuration}ms`: ""}</span>
+
+    <div className='main'>
+      <div className='overview'>
+              <div className="grid-container">
               {tracks.map((track) => (
                 <div className="grid-item">
                 <Track key={track.track_id} token={token} onSelect={handleSelectTrack} track={track} selected={track.track_id === selectedTrack?.track_id}/>
@@ -101,8 +102,10 @@ function Overview(props:OverviewProps) {
               ))}
           </div>
         </div>
+        <div className='track-info_container'>
         {selectedTrack && <TrackInfo track={selectedTrack} token={token} onSelect={handleSelectTrack} />}
-    </div>
+        </div>
+      </div>
     {selectedTrack && <AudioPlayer track={selectedTrack}  token={token} />}
       
     </>
