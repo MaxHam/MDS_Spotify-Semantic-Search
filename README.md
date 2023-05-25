@@ -77,6 +77,7 @@ Feed these into a vector format to find a similar song by selecting a song from 
 - Node.js
 - Docker
 - Python 3.8
+- Spotify API credentials
 ## Installation
 1. Install the requirements with
 ```bash
@@ -109,7 +110,7 @@ python clean_sql_data.py
 python sql_import.py
 ```
 
-9. Create an `.env` file in the `webapp` directory with the following content
+9. Create an `.env` file in the `webapp` directory with the following content. You need this to enable the Spotify API.
 ```bash
 SPOTIFY_CLIENT_ID=your_spotify_client_id
 SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
