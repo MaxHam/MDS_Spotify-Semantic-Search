@@ -73,9 +73,8 @@ services:
         dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    environment:
-      SPOTIFY_CLIENT_ID: '1485320a3c124602a57e56b5fac7bd4f'
-      SPOTIFY_CLIENT_SECRET: '92fa55f6bbed40c38c85f572aeb0fa99'
+    env_file:
+      - ./.env
 volumes:
   db_data: {}
 ...

@@ -116,8 +116,9 @@ SPOTIFY_CLIENT_ID=your_spotify_client_id
 SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
 PORT=5001
 ```
+
 ## Usage
-1. Start the databases, modules and web serverwith
+1. Start the databases, modules and web server with
 ```bash
 docker-compose start
 ```
