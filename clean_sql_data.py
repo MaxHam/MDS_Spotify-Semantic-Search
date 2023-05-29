@@ -78,7 +78,7 @@ CREATE TABLE music_data (
     sql += """;"""
 
     # save json file
-    with open("data/spotify_songs.sql", "w") as f:
+    with open("data/spotify_songs.sql", "w", encoding="utf-16") as f:
         f.write(sql)
 
 

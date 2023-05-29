@@ -13,7 +13,7 @@ def main(args):
     # convert to json
     df_json = df.to_json(orient="records")
     # save json file
-    with open("data/spotify_songs.json", "w") as f:
+    with open("data/spotify_songs.json", "w", encoding="utf-16") as f:
         f.write(df_json)
 if __name__ == "__main__":
     import argparse
