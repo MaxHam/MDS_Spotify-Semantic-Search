@@ -1,7 +1,7 @@
 import mysql.connector
 
 def run_sql_script(filename):
-    with open(filename, 'r') as sql_file:
+    with open(filename, 'r', encoding="utf-16") as sql_file:
         sql_script = sql_file.read()
 
     cnx = mysql.connector.connect(
