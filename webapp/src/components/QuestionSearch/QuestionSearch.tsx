@@ -21,8 +21,8 @@ const Search: React.FC<ISearch> = (props) => {
     }
     return (
         <>
-            <form onSubmit={handleSubmit}>
-                <label>
+            <form className='question-search-form' onSubmit={handleSubmit}>
+                <label className='question-search-label'>
                     <input className='question-search-input' placeholder='What is love?' type="text" value={searchTerm} onChange={handleChange} />
                 </label>
                 <input className='submit-input' type="submit" value="Submit" />

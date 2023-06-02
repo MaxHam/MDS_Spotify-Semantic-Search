@@ -11,9 +11,9 @@ interface TrackInfoProps {
 }
 
 const TrackInfo: React.FC<TrackInfoProps> = (props) => {
-    const { track, token, onSelect } = props;
+    const { track: selectedTrack, token, onSelect } = props;
 
-    const { track_name, artist_name, album_name, lyrics  } = track;
+    const { track_name, artist_name, album_name, lyrics  } = selectedTrack;
 
     const [similarTracks, setSimilarTracks] = useState<ITrack[]>([]);
 
@@ -23,21 +23,21 @@ const TrackInfo: React.FC<TrackInfoProps> = (props) => {
 
     return (
         <div className='track-info'>
-            <h2><b>{track.track_name}</b></h2>
-            <h3>{track.artist_name}</h3>
-            <h3>{track.album_name}</h3>
+            <h2><b>{selectedTrack.track_name}</b></h2>
+            <h3>{selectedTrack.artist_name}</h3>
+            <h3>{selectedTrack.album_name}</h3>
 
             <div className='similar-tracks'>
                 <h2>Similar Songs</h2>
                 <div className='similar-tracks-container'>
                     {similarTracks.map((track, index) => {
-                        return <Track token={token} key={index} track={track} selected={track.track_id === track?.track_id} onSelect={onSelect} />
+                        return <Track token={token} key={index} track={track} selected={selectedTrack.track_id === track?.track_id} onSelect={onSelect} />
                     })}
                 </div>
             </div>
             <div className='lyrics'>
                 <h2>Lyrics</h2>
-                <p>{track.lyrics}</p>
+                <p>{selectedTrack.lyrics}</p>
             </div>
             
         </div>

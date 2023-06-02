@@ -6,9 +6,15 @@
     border-radius: 0%;
     padding: 0;
 }
+.track:focus {
+    outline: #21d961;
+}
+.track:hover {
+    border-color: #21d961;
+}
 
 .track.selected {
-    border: 10px solid blue;
+    border: 3px solid #21d961;
 }
 
 .track_info-container {

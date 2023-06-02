@@ -42,7 +42,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
           bgColor: '#333',
           color: '#fff',
           loaderColor: '#fff',
-          sliderColor: '#1cb954',
+          sliderColor: '#21d961',
           trackArtistColor: '#ccc',
           trackNameColor: '#fff',
           height: '55px',
