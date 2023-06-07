@@ -108,11 +108,10 @@ input:checked + .slider:before {
 .track-info_container {
   display: flex;
   flex-direction: column;
-  margin-right:1rem;
   width:30%;
-  height: 100%;
+  min-height: 600px;
   
-  background-color: #2f2d31;
+  background-color: #2f2e31;
 }
 
 .main {

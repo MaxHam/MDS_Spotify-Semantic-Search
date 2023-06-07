@@ -38,8 +38,6 @@ def import_data(client, data):
 
     # flush the schema and data
     client.schema.delete_all()
-    # cut data
-    # data = data[:10]
 
     # Configure a batch 
     with client.batch as batch:

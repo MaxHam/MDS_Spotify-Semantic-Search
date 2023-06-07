@@ -1,4 +1,16 @@
 # Music Similarity Search
+This is a project for the "Modern Database Systems" lecture, held at the Technische Hochschule Köln. Aim of the project is to find a use case where modern NoSQL databases outperform SQL databases.
+
+## Table of contents
+- [Motivation](#motivation)
+- [Roadmap](#roadmap)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Benchmark](#benchmark)
+- [Dataset](#dataset)
+- [Databases](#databases)
+- [Helpful](#helpful)
+- [Other interesting datasets](#other-interesting-datasets)
 ## Motivation
 
 > Music Dataset consists of 25 columns, describing track_id, track_name, artist_name, album_names, genre, release_date, popularity, danceability, energy, key, loudness, mode, speechiness, acousticness, instrumentalness, liveness, valence, tempo, duration_ms, time_signature, lyrics, language, lyrics_sentiment, lyrics_subjectivity, lyrics_polarity.
@@ -14,7 +26,7 @@ Feed these into a vector format to find a similar song by selecting a song from 
 - Find similar songs based on both lyrics and audio features
 - Find songs with natural language search
 
-##  Features
+## Roadmap
 - [x] Create a vector database with Weaviate.io
 - [x] Create SQL schema
 - [x] Create a SQL database
@@ -26,52 +38,10 @@ Feed these into a vector format to find a similar song by selecting a song from 
 - [x] Semantic search with Weaviate.io
 - [ ] Keyword search with SQL
 - [x] Similarity Search
-- [ ] Create a generative search engine
+- [ ] ~~Create a generative~~ search engine
 - [x] Integrate Spotify API
-- [ ] Dockerize frontend
-- [ ] Update docker-compose
-
-# Paper
-## Outline
-1. Introduction
-    - Motivation
-    - Use case
-    - Features
-    - Dataset
-    - Outline
-2. Project
-    - Use case
-    - Architecture
-    - Implementation
-3. Data
-    - Dataset
-    - data cleaning
-    - data schema
-4. Weaviate as Vector Database
-    - General
-    - Semantic Search
-        - how it works
-    - Similarity recommendation
-        - how it works
-    
-3. Discussion Database comparison
-    - compare SQL vs. Weaviate
-    - compare use case
-    - compare speed
-    - compare maintainability
-        - migration
-    - compare scalability
-        - horizontal vs vertical
-    - compare complexity
-    - compare cost
-    - compare flexibility
-5. Conclusion
-    - Summary
-    - Future work
-    - Limitations
-    - Outlook
-
-
+- [x] Dockerize frontend
+- [x] Update docker-compose
 
 # Requirements
 - Node.js
@@ -85,51 +55,48 @@ pip install -r requirements.txt
 ```
 2. Download the dataset from [Kaggle](https://www.kaggle.com/datasets/imuhammad/audio-features-and-lyrics-of-spotify-songs)
 3. Unzip the dataset and place it in the `data` directory
+
 4. Clean the dataset with 
 ```bash
 python3 clean_data.py
 ```
 
-5. First time using this project create the Weaviate.io & vectorizer server containers with
-```bash
-docker-compose up
-```
-
-6. Import the dataset into Weaviate.io with
-```bash
-python weaviate_import.py
-```
-
-7. Clean the dataset with clean_sql_data and create the required .sql script
-```bash
-python clean_sql_data.py
-```
-
-8. Upload the dataset to the sql server
-```bash
-python sql_import.py
-```
-
-9. Create an `.env` file in the `webapp` directory with the following content. You need this to enable the Spotify API.
+5. Create an `.env` file in the `webapp` directory with the following content. You need this to enable the Spotify API.
 ```bash
 SPOTIFY_CLIENT_ID=your_spotify_client_id
 SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
 PORT=5001
 ```
 
-## Usage
-1. Start the databases, modules and web server with
+6. First time using this project create the Weaviate.io & vectorizer server containers and start the web server with
 ```bash
-docker-compose start
+docker-compose up
 ```
 
-2. Start the frontend with
+7. Import the dataset into Weaviate.io with
 ```bash
-cd webapp
-npm install
-npm run dev
+python weaviate_import.py
 ```
 
+8. Go to `localhost:3000` and enjoy listening to songs!
+## Benchmark
+
+1. If not already done, repeat all steps mentioned in [Installation](#installation) to initiliaze the vector database
+
+2. Clean the dataset with clean_sql_data and create the required .sql script
+```bash
+python3 clean_sql_data.py
+```
+
+3. Upload the dataset to the sql server
+```bash
+python3 sql_import.py
+```
+
+4. Run the benchmark script
+```bash
+python3 benchmark.py
+```
 
 ## Dataset
 
@@ -186,3 +153,43 @@ Decide for a database that fits use case the best.
 - hard to integrate complex class structure, because of cross references
 - no keyword search
 # Arguments for SQL
+
+# Paper
+## Outline
+1. Introduction
+    - Motivation
+    - Use case
+    - Features
+    - Dataset
+    - Outline
+2. Project
+    - Use case
+    - Architecture
+    - Implementation
+3. Data
+    - Dataset
+    - data cleaning
+    - data schema
+4. Weaviate as Vector Database
+    - General
+    - Semantic Search
+        - how it works
+    - Similarity recommendation
+        - how it works
+    
+3. Discussion Database comparison
+    - compare SQL vs. Weaviate
+    - compare use case
+    - compare speed
+    - compare maintainability
+        - migration
+    - compare scalability
+        - horizontal vs vertical
+    - compare complexity
+    - compare cost
+    - compare flexibility
+5. Conclusion
+    - Summary
+    - Future work
+    - Limitations
+    - Outlook
