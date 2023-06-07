@@ -109,8 +109,7 @@ input:checked + .slider:before {
   display: flex;
   flex-direction: column;
   width:30%;
-  min-height: 600px;
-  
+  min-height: 600px; 
   background-color: #2f2e31;
 }
 

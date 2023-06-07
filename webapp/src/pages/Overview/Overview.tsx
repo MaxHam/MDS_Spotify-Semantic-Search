@@ -19,10 +19,6 @@ function Overview(props:OverviewProps) {
   // False := Search, True := QuestionSearch
   const [mode, setMode] = useState<boolean>(false)
 
-  const handleModeSwitch = () => {
-    setMode(!mode);
-  }
-
   const handleSelectTrack = (track: ITrack) => {
     setSelectedTrack(track);
   }
