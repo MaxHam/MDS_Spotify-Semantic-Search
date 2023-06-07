@@ -1,3 +1,8 @@
 weaviate-client
 pandas
 mysql-connector-python
+
+# plot
+
+matplotlib
+scikit-learn

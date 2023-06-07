@@ -43,8 +43,8 @@ services:
     #     reservations:
     #       devices:
     #       - capabilities: [gpu]
-  qna-transformers:
-    image: semitechnologies/qna-transformers:bert-large-uncased-whole-word-masking-finetuned-squad
+  # qna-transformers:
+  #   image: semitechnologies/qna-transformers:bert-large-uncased-whole-word-masking-finetuned-squad
     # environment:
     #   ENABLE_CUDA: '1'
     #   NVIDIA_VISIBLE_DEVICES: all
