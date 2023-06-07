@@ -18,26 +18,6 @@ const measure = async (fn: any) => {
     return [res, duration];
 }
 
-const ask = async(question: string, limit=16) => {
-    const withAsk = {
-        question,
-        // properties: ['summary'],
-    };
-
-    try {
-        const res = await client.graphql
-            .get()
-            .withClassName('Track')
-            .withAsk(withAsk)
-            .withFields(`${graphqlQuery} _additional { answer { hasAnswer certainty property result startPosition endPosition } }`)
-            .withLimit(limit)
-            .do()
-            return res.data.Get.Track;
-    } catch (error) {
-        console.error(error)
-    }
-}
-
 const getNearText = async(texts: string[], limit=16) => {
     const nearText = {concepts: texts};
     try {
@@ -70,5 +50,5 @@ const getAllTracks = async(limit=16):Promise<any[]> => {
     return [];
 }
 
-export { getNearText, getAllTracks, ask, measure };
+export { getNearText, getAllTracks, measure };
 export default client;

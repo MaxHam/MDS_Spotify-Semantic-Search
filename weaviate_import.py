@@ -106,27 +106,10 @@ def query(client):
 
     print(json.dumps(result, indent=4))
 
-def ask(client):
-    ask = {
-        "question": "Ariana Grande?",
-        "properties": ["name"],
-    }
-
-    result = (
-        client.query
-        .get("Track", ["name", "_additional {answer {hasAnswer certainty property result startPosition endPosition} }"])
-        .with_ask(ask)
-        .with_limit(1)
-        .do()
-        )
-    print(json.dumps(result, indent=4))
-
 def main(args):
     client = init_client()
     data = read_data()
     import_data(client, data)
-    # query(client)
-    # ask(client)
 
 
 
