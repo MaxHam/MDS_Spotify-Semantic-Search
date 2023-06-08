@@ -6,6 +6,8 @@ interface ITrack {
     album_id: string;
     duration_ms: number;
     lyrics: string;
+    genre: string;
+    subgenre: string;
   }
 
 export type { ITrack }

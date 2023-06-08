@@ -1,6 +1,6 @@
 import weaviate, { WeaviateClient } from 'weaviate-ts-client';
 
-const graphqlQuery = 'track_name artist_name track_id album_name duration_ms lyrics album_id';
+const graphqlQuery = 'track_name artist_name track_id album_name duration_ms lyrics album_id genre subgenre';
 
 const client: WeaviateClient = weaviate.client({
   scheme: 'http',

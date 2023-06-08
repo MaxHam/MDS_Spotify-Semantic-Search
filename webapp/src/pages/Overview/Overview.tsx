@@ -32,6 +32,7 @@ function Overview(props:OverviewProps) {
       return;
     }
     try {
+      console.log("Searching for tracks similar to: ", value)
       const [newTracks, duration] = await measure(async() => await getNearText([value]));
       if (newTracks.length === 0 || !newTracks) {
         return;
@@ -48,14 +49,6 @@ function Overview(props:OverviewProps) {
     <>
     <div className="header">
         <h1>Spotify Semantic Search</h1>
-        {/* <div className='mode-switch'>
-        <span className="mode">Semantic</span>
-        <label className="switch">
-          <input type="checkbox" onChange={handleModeSwitch} checked={mode}/>
-          <span className="slider round"></span>
-        </label>
-        <span className="mode">Question</span>
-        </div>   */}
       </div> 
       <div className='search-bar'>
         <h3>Query tracks by their semantic lyric similarity to the search term</h3>

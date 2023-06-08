@@ -23,9 +23,12 @@ const TrackInfo: React.FC<TrackInfoProps> = (props) => {
 
     return (
         <div className='track-info'>
-            <h2><b>{selectedTrack.track_name}</b></h2>
-            <h3>{selectedTrack.artist_name}</h3>
-            <h3>{selectedTrack.album_name}</h3>
+            <h2><b>Title: </b>{selectedTrack.track_name}</h2>
+            <h3><b>Artist: </b>{selectedTrack.artist_name}</h3>
+            <h3><b>Album: </b>{selectedTrack.album_name}</h3>
+
+            <h3><b>Genre: </b>{selectedTrack.genre.toUpperCase()}</h3>
+            <h3><b>Subgenre: </b>{selectedTrack.subgenre}</h3>
 
             <div className='similar-tracks'>
                 <h2>Similar Songs</h2>
