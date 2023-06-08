@@ -1,5 +1,7 @@
 import json
 import pandas as pd
+import mysql.connector
+from datetime import datetime
 from weaviate_import import init_client
 from timeit import default_timer as timer
 
@@ -9,7 +11,7 @@ example_vector = [-0.06430846, -0.24293041, 0.110439375, -0.100999914, 0.0962964
 
 
 def get_track_names(result):
-    return ", ".join([t["track_name"] for t in result["data"]["Get"]["Track"]])
+    return ", ".join(result)
 
 
 def vector_query(client, query, limit=10, columns=columns, is_array=False):
@@ -17,15 +19,16 @@ def vector_query(client, query, limit=10, columns=columns, is_array=False):
         "concepts": query,
     }  
 
-    result = ( 
+    query = ( 
         client.query
         .get("Track", ["track_name"])
         .with_near_text(nearText)
-        .with_limit(limit)
-        .do()
     )
-
-    return get_track_names(result)
+    
+    if limit > 1:
+        query = query.with_limit(limit)
+    
+    return query.do()
 
 def document_query(client, query, limit=10, columns=columns, is_array=False):
     withFilter = {
@@ -33,16 +36,16 @@ def document_query(client, query, limit=10, columns=columns, is_array=False):
         "operands": get_operands(query, columns=columns, is_array=is_array)
     }
 
-    result = ( 
+    query = ( 
         client.query
         .get("Track", ["track_name"])
         .with_where(withFilter)
-        .with_limit(limit)
-        .do()
     )
+    
+    if limit > 1:
+        query = query.with_limit(limit)
 
-    return get_track_names(result)
-
+    return query.do() 
 
 def get_operands(query, columns=columns, is_array=False):
     if is_array:
@@ -89,19 +92,67 @@ def measure(func):
     end = timer()
     return end - start
 
+def aggregate_query_time_sql(func, cursor, query, n=100):
+    '''
+    Aggregate the query time for a function
+    '''
+    total_time = 0
+    for i in range(n):
+        time, result = measure_sql(func, cursor, query)
+        total_time += time
+        # print (f"Query {i}/{n} took {time} seconds")
+    return total_time / n, result
+
+def measure_sql(func, cursor, query):
+    '''
+    Measure execution time of a function
+    '''
+    start = timer()
+
+    result = func(cursor, query)
+
+    end = timer()
+    return end - start, result
+
+def executeSql(cursor, query):
+    cursor.execute(query)
+    return cursor.fetchall()
+
+def run_benchmark(weaviate_client, query, query_func, limit, benchmark_id, database, columns=columns, is_array=False):
+    query_time = aggregate_query_time(lambda: query_func(weaviate_client, query=query, limit=limit, columns=columns, is_array=is_array))
+    result = query_func(weaviate_client, query=query, limit=limit, columns=columns, is_array=is_array)
+
+    result = get_track_names(sorted([t["track_name"] for t in result["data"]["Get"]["Track"]])[:10])
+    df = pd.DataFrame({"id": benchmark_id, "database": database, "avg_query_time": query_time, "result": result}, index=[0])
+    print(f"{benchmark_id}: Time for {database} database: {query_time}")
+    return df
+
+def run_benchmark_sql(query, benchmark_id, database):
+    cnx = mysql.connector.connect(user='root', password='root', host='127.0.0.1', database='spotifyDataset')
+    cursor = cnx.cursor()
+    
+    try:     
+        query_time, result = aggregate_query_time_sql(executeSql, cursor, query)
+        cnx.commit()    
+
+        result = get_track_names(sorted(t[0] for t in result)[:10])
+        
+        df = pd.DataFrame({"id": benchmark_id, "database": database, "avg_query_time": query_time, "result": result}, index=[0])
+        print(f"{benchmark_id}: Time for {database} database: {query_time}")
+        return df
+        
+    except mysql.connector.Error as err:
+        print("Something went wrong: {}".format(err))
+    finally:
+        cursor.close()
+        cnx.close()
+
 def save_results(results):
     '''
     Save the results to a .csv file
     '''
     df = pd.DataFrame(results)
-    df.to_csv("benchmark_results.csv")
-
-def run_benchmark(weaviate_client, query, query_func, limit, benchmark_id, database, columns=columns, is_array=False):
-    query_time = aggregate_query_time(lambda: query_func(weaviate_client, query=query, limit=limit, columns=columns, is_array=is_array))
-    result = query_func(weaviate_client, query=query, limit=limit, columns=columns, is_array=is_array)
-    df = pd.DataFrame({"id": benchmark_id, "avg_query_time": query_time, "result": result, "database": database}, index=[0])
-    print(f"{benchmark_id}: Time for {database} database: {query_time}")
-    return df
+    df.to_csv("benchmarkResults/benchmark_results" + datetime.now().strftime("%Y%m%d_%H%M%S") + ".csv")
 
 def main(args):
     '''
@@ -124,13 +175,15 @@ def main(args):
     weaviate_client = init_client()
     sql_client = None
 
-    df = pd.DataFrame(columns=["id", "avg_query_time", "result", "database"])
+    df = pd.DataFrame(columns=["id", "database", "avg_query_time", "result"])
 
     # limit
-    limit = 10
+    limit = -1
     #BM1
     # Query for 10 tracks that are "similar" to "What is love?"
     query = "Love"
+    query_sql = """SELECT track_name FROM music_data WHERE track_name like '%Love%' or track_artist like '%Love%' or track_album_name like '%Love%' or lyrics like '%Love%' or playlist_genre like '%Love%' or playlist_subgenre like '%Love%';"""
+    
     # Measure single query time for vector database
     print("Measuring single query times...")
     result = run_benchmark(weaviate_client=weaviate_client, query=[query], query_func=vector_query, limit=limit, benchmark_id="BM1", database="vector")
@@ -139,11 +192,21 @@ def main(args):
     result = run_benchmark(weaviate_client=weaviate_client, query=query, query_func=document_query, limit=limit, benchmark_id="BM1", database="document")
     df = pd.concat([df, result], ignore_index=True)
     # Measure query time for SQL database
-
+    result = run_benchmark_sql(query=query_sql, benchmark_id="BM1", database="sql")
+    df = pd.concat([df, result], ignore_index=True)
+    
+    
+    
     #BM2
     print("Measuring multiple query times...")
     # Query for limit tracks that are "similar" to multiple queries
     mul_query = ["Love", "Cake", "Fame"] # respect capital letters
+    query_sql = """SELECT track_name FROM music_data WHERE track_name like '%Love%' and track_name like '%Cake%' and track_name like '%Fame%'
+or track_artist like '%Love%' and track_artist like '%Cake%' and track_artist like '%Fame%'
+or track_album_name like '%Love%' and track_album_name like '%Cake%' and track_album_name like '%Fame%'
+or lyrics like '%Love%' and lyrics like '%Cake%' and lyrics like '%Fame%'
+or playlist_genre like '%Love%' and playlist_genre like '%Cake%' and playlist_genre like '%Fame%'
+or playlist_subgenre like '%Love%' and playlist_subgenre like '%Cake%' and playlist_subgenre like '%Fame%';"""
     # Measure multiple query time for vector database
     result = run_benchmark(weaviate_client=weaviate_client, query=mul_query, query_func=vector_query, limit=limit, benchmark_id="BM2", database="vector")
     df = pd.concat([df, result], ignore_index=True)
@@ -151,29 +214,45 @@ def main(args):
     result = run_benchmark(weaviate_client=weaviate_client, query=mul_query, query_func=document_query, limit=limit, benchmark_id="BM2", database="document", is_array=True)
     df = pd.concat([df, result], ignore_index=True)
     # Measure multiple query time for SQL database
-  
+    result = run_benchmark_sql(query=query_sql, benchmark_id="BM2", database="sql")
+    df = pd.concat([df, result], ignore_index=True)
+    
     #BM3
     print("Measuring whole sentence query times...")
     # Query for limit tracks that are "similar" to a whole sentence
     sentence_query = "What is love?"
+    query_sql = """SELECT track_name FROM music_data WHERE track_name like '%What is love?%'
+or track_artist like '%What is love?%'
+or track_album_name like '%What is love?%'
+or lyrics like '%What is love?%'
+or playlist_genre like '%What is love?%'
+or playlist_subgenre like '%What is love?%';"""
     # Measure  query time for vector database
     result = run_benchmark(weaviate_client=weaviate_client, query=[sentence_query], query_func=vector_query, limit=limit, benchmark_id="BM3", database="vector")
     df = pd.concat([df, result], ignore_index=True)
     # Measure  query time for document database
     result = run_benchmark(weaviate_client=weaviate_client, query=sentence_query, query_func=document_query, limit=limit, benchmark_id="BM3", database="document")
     df = pd.concat([df, result], ignore_index=True)
-    # # Measure query time for SQL database
-
+    # Measure query time for SQL database
+    result = run_benchmark_sql(query=query_sql, benchmark_id="BM3", database="sql")
+    df = pd.concat([df, result], ignore_index=True)
+    
     #BM4
     print("Measuring single column query times...")
     # Query for limit tracks that are "similar" to a single column
-    single_column_query = "What is love?"
+    single_column_query = "Bohemian Rhapsody"
+    query_sql = """SELECT track_name FROM music_data WHERE track_name like 'Bohemian Rhapsody%';"""
     # Measure  query time for vector database
     result = run_benchmark(weaviate_client=weaviate_client, query=[single_column_query], query_func=vector_query, limit=limit, benchmark_id="BM4", database="vector")
     df = pd.concat([df, result], ignore_index=True)
     # Measure  query time for document database
     result = run_benchmark(weaviate_client=weaviate_client, query=single_column_query, query_func=document_query, limit=limit, benchmark_id="BM4", database="document", columns=["track_name"] )
     df = pd.concat([df, result], ignore_index=True)
+    # Measure query time for SQL database
+    result = run_benchmark_sql(query=query_sql, benchmark_id="BM4", database="sql")
+    df = pd.concat([df, result], ignore_index=True)
+
+    limit = 10
 
     # BM5 is only possible with vector approach
     print("Measuring whole song query times...")
@@ -186,11 +265,14 @@ def main(args):
             .with_limit(limit)
             .do()
         ))
+    
     result = weaviate_client.query.get("Track", ["track_name"]).with_near_vector({"vector": example_vector}).with_limit(limit).do()
     track_names = get_track_names(result)
     df2 = pd.DataFrame({"id": "BM5", "avg_query_time": query_time, "result": track_names, "database": "vector"}, index=[0])
     print(f"Whole song query time for vector database: {query_time}")
     df = pd.concat([df, df2], ignore_index=True)
+
+
 
     # Add empty rows for document and SQL
     # df2 = pd.DataFrame({"id": "BM5", "avg_query_time": {}, "result": {}, "database": "document"})
