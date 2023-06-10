@@ -1,0 +1,10 @@
+,id,database,avg_query_time,result
+0,BM1,vector,0.008232660071225837,"All 4 Love, All My Love - 1990 Remaster, All The Love You Got, And I Love Her - Live On MTV Unplugged, And I Love Him, Bad Romance - EP Version, Bad Romance - Live, Because Of Love, Bring Me Your Love (feat. THEA), Everlasting"
+1,BM1,document,0.050923411186086016,"Adrenalize, Ain't No Future In Yo' Frontin', Alone, April Showers, Back In Black, Beautiful Trauma - MOTi Remix, Been A While, Bored, California, Camelot (feat. Yo Gotti, BlocBoy JB & Moneybagg Yo) - Remix"
+2,BM2,vector,0.008414444975787774,"All My Love - 1990 Remaster, All The Love You Got, And I Love Her - Live On MTV Unplugged, And I Love Him, Boys Do Fall In Love, Bring Me Your Love (feat. THEA), Buttermilk Biscuits (Keep On Square Dancin'), Cake - Tokyo Mo Remix, Candy Girl, Candy Rain"
+3,BM2,document,0.07219979338697158,"Future, Grindin', Heartless (feat. Rick Ross & Bigga Rankin), Keep Watch, Mo Reala, Rap God, The Monster, The Monster"
+4,BM3,vector,0.008188332940917462,"All My Love - 1990 Remaster, All The Love You Got, And I Love Him, As Long As You Love Me, Because Of Love, Best Friend, Bring Me Your Love (feat. THEA), Come and Get Your Love - Radio Edit, Everlasting Love, Fallin'"
+5,BM3,document,0.052183169149793686,"7 Days, A Little Respect (Remastered 2009), ANGST II, Again - Alan Walker Remix, Ain't 2 Proud 2 Beg - U.S. 7"" Edit, All About Us, Boy I've Been Told, California Soul, Call The Law - Main Version - Explicit, Cheerleader - Felix Jaehn Remix Radio Edit"
+6,BM4,vector,0.00688389535760507,"Afro Beat Blues (Feat. Ojah), Afro Blue, And I Love Her - Live On MTV Unplugged, As the Music Plays the Band, Axel F - From ""Beverly Hills Cop"" Soundtrack, BLUE, Bank Robbery, Beautiful - 3onderboy remix, Before Dark, Best For You"
+7,BM4,document,0.005265520818065852,"Bohemian Rhapsody - 2011 Mix, Bohemian Rhapsody - 2011 Mix, Bohemian Rhapsody - 2011 Mix, Bohemian Rhapsody - 2011 Remaster, Bohemian Rhapsody - Remastered 2011"
+8,BM5,vector,0.0034152266534511,data
