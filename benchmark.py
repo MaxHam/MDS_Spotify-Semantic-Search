@@ -13,40 +13,6 @@ example_vector = [-0.06430846, -0.24293041, 0.110439375, -0.100999914, 0.0962964
 def get_track_names(result):
     return ", ".join(result)
 
-
-def vector_query(client, query, limit=10, columns=columns, is_array=False):
-    nearText = {
-        "concepts": query,
-    }  
-
-    query = ( 
-        client.query
-        .get("Track", ["track_name"])
-        .with_near_text(nearText)
-    )
-    
-    if limit > 1:
-        query = query.with_limit(limit)
-    
-    return query.do()
-
-def document_query(client, query, limit=10, columns=columns, is_array=False):
-    withFilter = {
-        "operator": "Or",
-        "operands": get_operands(query, columns=columns, is_array=is_array)
-    }
-
-    query = ( 
-        client.query
-        .get("Track", ["track_name"])
-        .with_where(withFilter)
-    )
-    
-    if limit > 1:
-        query = query.with_limit(limit)
-
-    return query.do() 
-
 def get_operands(query, columns=columns, is_array=False):
     if is_array:
         return [
@@ -118,9 +84,9 @@ def executeSql(cursor, query):
     cursor.execute(query)
     return cursor.fetchall()
 
-def run_benchmark(weaviate_client, query, query_func, limit, benchmark_id, database, columns=columns, is_array=False):
-    query_time = aggregate_query_time(lambda: query_func(weaviate_client, query=query, limit=limit, columns=columns, is_array=is_array))
-    result = query_func(weaviate_client, query=query, limit=limit, columns=columns, is_array=is_array)
+def run_benchmark(query, benchmark_id, database):
+    query_time = aggregate_query_time(lambda: query.do())
+    result = query.do()
 
     result = get_track_names(sorted([t["track_name"] for t in result["data"]["Get"]["Track"]])[:10])
     df = pd.DataFrame({"id": benchmark_id, "database": database, "avg_query_time": query_time, "result": result}, index=[0])
@@ -173,7 +139,6 @@ def main(args):
 
     # init dbs
     weaviate_client = init_client()
-    sql_client = None
 
     df = pd.DataFrame(columns=["id", "database", "avg_query_time", "result"])
 
@@ -186,10 +151,37 @@ def main(args):
     
     # Measure single query time for vector database
     print("Measuring single query times...")
-    result = run_benchmark(weaviate_client=weaviate_client, query=[query], query_func=vector_query, limit=limit, benchmark_id="BM1", database="vector")
+    nearText = {
+        "concepts": [query],
+    }  
+
+    q = ( 
+        weaviate_client.query
+        .get("Track", ["track_name"])
+        .with_near_text(nearText)
+    )
+
+    if limit > 1:
+        query = query.with_limit(limit)
+    
+    
+    result = run_benchmark(query=q, benchmark_id="BM1", database="vector")
     df = pd.concat([df, result], ignore_index=True)
     # Measure single query time for document database
-    result = run_benchmark(weaviate_client=weaviate_client, query=query, query_func=document_query, limit=limit, benchmark_id="BM1", database="document")
+    withFilter = {
+        "operator": "Or",
+        "operands": get_operands(query, columns=columns, is_array=False)
+    }
+    q = ( 
+        weaviate_client.query
+        .get("Track", ["track_name"])
+        .with_where(withFilter)
+    )
+
+    if limit > 1:
+        query = query.with_limit(limit)
+    
+    result = run_benchmark(query=q, benchmark_id="BM1", database="document")
     df = pd.concat([df, result], ignore_index=True)
     # Measure query time for SQL database
     result = run_benchmark_sql(query=query_sql, benchmark_id="BM1", database="sql")
@@ -208,10 +200,37 @@ or lyrics like '%Love%' and lyrics like '%Cake%' and lyrics like '%Fame%'
 or playlist_genre like '%Love%' and playlist_genre like '%Cake%' and playlist_genre like '%Fame%'
 or playlist_subgenre like '%Love%' and playlist_subgenre like '%Cake%' and playlist_subgenre like '%Fame%';"""
     # Measure multiple query time for vector database
-    result = run_benchmark(weaviate_client=weaviate_client, query=mul_query, query_func=vector_query, limit=limit, benchmark_id="BM2", database="vector")
+    nearText = {
+        "concepts": mul_query,
+    }  
+
+    q = ( 
+        weaviate_client.query
+        .get("Track", ["track_name"])
+        .with_near_text(nearText)
+    )
+    if limit > 1:
+        query = query.with_limit(limit)
+    
+
+    result = run_benchmark(query=q, benchmark_id="BM2", database="vector")
     df = pd.concat([df, result], ignore_index=True)
     # Measure multiple query time for document database
-    result = run_benchmark(weaviate_client=weaviate_client, query=mul_query, query_func=document_query, limit=limit, benchmark_id="BM2", database="document", is_array=True)
+    withFilter = {
+        "operator": "Or",
+        "operands": get_operands(mul_query, columns=columns, is_array=True)
+    }
+    q = ( 
+        weaviate_client.query
+        .get("Track", ["track_name"])
+        .with_where(withFilter)
+    )
+
+    if limit > 1:
+        query = query.with_limit(limit)
+    
+
+    result = run_benchmark(query=q, benchmark_id="BM2", database="document",)
     df = pd.concat([df, result], ignore_index=True)
     # Measure multiple query time for SQL database
     result = run_benchmark_sql(query=query_sql, benchmark_id="BM2", database="sql")
@@ -228,10 +247,36 @@ or lyrics like '%What is love?%'
 or playlist_genre like '%What is love?%'
 or playlist_subgenre like '%What is love?%';"""
     # Measure  query time for vector database
-    result = run_benchmark(weaviate_client=weaviate_client, query=[sentence_query], query_func=vector_query, limit=limit, benchmark_id="BM3", database="vector")
+    nearText = {
+        "concepts": [sentence_query],
+    }  
+
+    q = ( 
+        weaviate_client.query
+        .get("Track", ["track_name"])
+        .with_near_text(nearText)
+    )
+
+    if limit > 1:
+        query = query.with_limit(limit)
+    
+    result = run_benchmark(query=q, benchmark_id="BM3", database="vector")
     df = pd.concat([df, result], ignore_index=True)
     # Measure  query time for document database
-    result = run_benchmark(weaviate_client=weaviate_client, query=sentence_query, query_func=document_query, limit=limit, benchmark_id="BM3", database="document")
+    withFilter = {
+        "operator": "Or",
+        "operands": get_operands(sentence_query, columns=columns, is_array=False)
+    }
+    q = ( 
+        weaviate_client.query
+        .get("Track", ["track_name"])
+        .with_where(withFilter)
+    )
+    
+    if limit > 1:
+        query = query.with_limit(limit)
+    
+    result = run_benchmark(query=q, benchmark_id="BM3", database="document")
     df = pd.concat([df, result], ignore_index=True)
     # Measure query time for SQL database
     result = run_benchmark_sql(query=query_sql, benchmark_id="BM3", database="sql")
@@ -243,10 +288,36 @@ or playlist_subgenre like '%What is love?%';"""
     single_column_query = "Bohemian Rhapsody"
     query_sql = """SELECT track_name FROM music_data WHERE track_name like 'Bohemian Rhapsody%';"""
     # Measure  query time for vector database
-    result = run_benchmark(weaviate_client=weaviate_client, query=[single_column_query], query_func=vector_query, limit=limit, benchmark_id="BM4", database="vector")
+    nearText = {
+        "concepts": [single_column_query],
+    }  
+
+    q = ( 
+        weaviate_client.query
+        .get("Track", ["track_name"])
+        .with_near_text(nearText)
+    )
+
+    if limit > 1:
+        query = query.with_limit(limit)
+    
+    result = run_benchmark(query=q, benchmark_id="BM4", database="vector")
     df = pd.concat([df, result], ignore_index=True)
     # Measure  query time for document database
-    result = run_benchmark(weaviate_client=weaviate_client, query=single_column_query, query_func=document_query, limit=limit, benchmark_id="BM4", database="document", columns=["track_name"] )
+    withFilter = {
+        "operator": "Or",
+        "operands": get_operands(single_column_query, columns=["track_name"], is_array=False)
+    }
+    q = ( 
+        weaviate_client.query
+        .get("Track", ["track_name"])
+        .with_where(withFilter)
+    )
+
+    if limit > 1:
+        query = query.with_limit(limit)
+    
+    result = run_benchmark(query=q, benchmark_id="BM4", database="document" )
     df = pd.concat([df, result], ignore_index=True)
     # Measure query time for SQL database
     result = run_benchmark_sql(query=query_sql, benchmark_id="BM4", database="sql")
@@ -258,20 +329,24 @@ or playlist_subgenre like '%What is love?%';"""
     print("Measuring whole song query times...")
     # Query for limit tracks that are "similar" to a whole song
     # Measure  query time for vector database
-    query_time = aggregate_query_time(lambda: ( 
-            weaviate_client.query
+
+    q = (weaviate_client.query
             .get("Track", ["track_name"])
-            .with_near_vector({"vector": example_vector})
-            .with_limit(limit)
+            .with_near_vector({"vector": example_vector}))
+    
+    if limit > 1:
+        query = q.with_limit(limit)
+    
+    
+    query_time = aggregate_query_time(lambda: ( 
+            query
             .do()
         ))
     
-    result = weaviate_client.query.get("Track", ["track_name"]).with_near_vector({"vector": example_vector}).with_limit(limit).do()
-    track_names = get_track_names(result)
-    df2 = pd.DataFrame({"id": "BM5", "avg_query_time": query_time, "result": track_names, "database": "vector"}, index=[0])
-    print(f"Whole song query time for vector database: {query_time}")
-    df = pd.concat([df, df2], ignore_index=True)
+    result = run_benchmark(query=q, benchmark_id="BM5", database="vector")
+    df = pd.concat([df, result], ignore_index=True)
 
+    print(f"Whole song query time for vector database: {query_time}")
 
 
     # Add empty rows for document and SQL
