@@ -33,6 +33,14 @@ USE spotifyDataset;
 DROP TABLE IF EXISTS track;
 DROP TABLE IF EXISTS playlist;
 DROP TABLE IF EXISTS album;
+DROP TABLE IF EXISTS artist;
+DROP VIEW IF EXISTS music_data_view;
+
+CREATE TABLE artist
+(
+    id INT PRIMARY KEY,
+    track_artist VARCHAR(255)
+);
 
 CREATE TABLE album
 (
@@ -54,7 +62,6 @@ CREATE TABLE playlist
 CREATE TABLE track (
     track_id VARCHAR(22) PRIMARY KEY,
     track_name VARCHAR(255) CHARACTER SET utf16,
-    track_artist VARCHAR(255),
     lyrics MEDIUMTEXT CHARACTER SET utf16,
     track_popularity INT,
     danceability FLOAT,
@@ -70,8 +77,10 @@ CREATE TABLE track (
     tempo FLOAT,
     duration_ms INT,
     language VARCHAR(255),
+    artist_id INT,
     track_album_id VARCHAR(22),
     playlist_id VARCHAR(22),
+    FOREIGN KEY (artist_id) REFERENCES artist(id),
     FOREIGN KEY (track_album_id) REFERENCES album(track_album_id),
     FOREIGN KEY (playlist_id) REFERENCES playlist(playlist_id),
     INDEX(track_album_id),
@@ -82,6 +91,25 @@ CREATE TABLE track (
 
     
 #    df = df.head(10)
+
+
+
+    #artist insert
+    sql_instert = """INSERT INTO artist (id, track_artist) VALUES """
+
+    artist = {}
+    
+    index = 0
+
+    #add artist
+    for index, row in df.iterrows():
+        #track_artist
+        if(row[1] != "3N29lMZHMKTVGXUN5aqzl5" and row[1] != "5lFDtgWsjRJu8fPOAyJIAK" and row[3] not in artist):
+            sql += sql_instert + f"({index},'{rpQuote(row[3])}');\n"
+            artist[row[3]] = index
+            index += 1
+        if(index % 100 == 0):
+            print(index)
 
     #album insert
     sql_instert = """INSERT INTO album (track_album_id,track_album_name,track_album_release_date) VALUES """
@@ -97,7 +125,7 @@ CREATE TABLE track (
         if(index % 100 == 0):
             print(index)
 
-    #album insert
+    #playlist insert
     sql_instert = """INSERT INTO playlist (playlist_name,playlist_id,playlist_genre,playlist_subgenre) VALUES """
     
     playlists = []
@@ -111,19 +139,27 @@ CREATE TABLE track (
         if(index % 100 == 0):
             print(index)
 
-    sql_instert = """INSERT INTO track (track_id,track_name,track_artist,lyrics,track_popularity,danceability,energy,musicKey,loudness,mode,speechiness,acousticness,instrumentalness,liveness,valence,tempo,duration_ms,language,track_album_id,playlist_id) VALUES """
+    sql_instert = """INSERT INTO track (track_id,track_name,lyrics,track_popularity,danceability,energy,musicKey,loudness,mode,speechiness,acousticness,instrumentalness,liveness,valence,tempo,duration_ms,language,artist_id,track_album_id,playlist_id) VALUES """
 
 
     #add tracks
     for index, row in df.iterrows():
-        #track_id,track_name,track_artist,lyrics,track_popularity,danceability,energy,key,loudness,mode,speechiness,acousticness,instrumentalness,liveness,valence,tempo,duration_ms,language,track_album_id,playlist_id
+        #track_id,track_name,lyrics,track_popularity,danceability,energy,key,loudness,mode,speechiness,acousticness,instrumentalness,liveness,valence,tempo,duration_ms,language,track_album_id,playlist_id
         if(row[1] != "3N29lMZHMKTVGXUN5aqzl5" and row[1] != "5lFDtgWsjRJu8fPOAyJIAK"):
-            sql += sql_instert + f"('{rpQuote(row[1])}','{rpQuote(row[2])}','{rpQuote(row[3])}','{rpQuote(row[4])}',{row[5]},{row[13]},{row[14]},{row[15]},{row[16]},{row[17]},{row[18]},{row[19]},{row[20]},{row[21]},{row[22]},{row[23]},{row[24]},'{rpQuote(row[25])}','{rpQuote(row[6])}','{rpQuote(row[10])}');\n"
+            sql += sql_instert + f"('{rpQuote(row[1])}','{rpQuote(row[2])}','{rpQuote(row[4])}',{row[5]},{row[13]},{row[14]},{row[15]},{row[16]},{row[17]},{row[18]},{row[19]},{row[20]},{row[21]},{row[22]},{row[23]},{row[24]},'{rpQuote(row[25])}',{artist.get(row[3])},'{rpQuote(row[6])}','{rpQuote(row[10])}');\n"
         if(index % 100 == 0):
             print(index)
 
     sql = sql[:-2]
     sql += """;"""
+
+    sql += """CREATE VIEW music_data_view AS
+SELECT track_id,track_name,track_artist,lyrics,track_popularity,track_album_name,track_album_release_date,playlist_name,playlist_genre,playlist_subgenre,danceability,energy,track.musicKey,loudness,track.mode,speechiness,acousticness,instrumentalness,liveness,valence,tempo,duration_ms,language
+FROM track
+JOIN playlist p ON p.playlist_id = track.playlist_id
+JOIN album a ON a.track_album_id = track.track_album_id
+JOIN artist a2 ON a2.id = track.artist_id;"""
+
 
     # save json file
     with open("data/spotify_songs.sql", "w", encoding="utf-16") as f:
