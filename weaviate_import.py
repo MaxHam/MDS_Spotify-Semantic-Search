@@ -85,27 +85,6 @@ def import_data(client, data):
             # client.batch.add_data_object(artist_properties, "Artist")
             # client.batch.add_data_object(album_properties, "Album")
 
-def query(client):
-    where_filter = {
-        "path": ["popularity"],
-        "operator": "GreaterThan",
-        "valueNumber": "80"
-    }
-    nearText = {
-        "concepts": ["Galileo"],
-    }  
-
-    result = ( 
-        client.query
-        .get("Track", ["track_name"])
-        # .with_where(where_filter)
-        .with_near_text(nearText)
-        .with_limit(2)
-        .do()
-    )
-
-    print(json.dumps(result, indent=4))
-
 def main(args):
     client = init_client()
     data = read_data()
