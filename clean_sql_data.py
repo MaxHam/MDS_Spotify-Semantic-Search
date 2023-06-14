@@ -3,7 +3,7 @@ import json
 import re
 
 def rpQuote(text):
-    return filter_out_non_utf16_chars(text.replace("'", "''").replace(";",""))
+    return text.replace("'", "''").replace(";","")
 
 def rpDate(text):
     sql_date_pattern = r'^\d{4}-\d{2}-\d{2}$'
@@ -12,8 +12,6 @@ def rpDate(text):
     else:
         return "null"
 
-def filter_out_non_utf16_chars(s):
-    return s#s.encode('utf8', 'ignore').decode('utf8')
 
 def main(args):
     # import csv

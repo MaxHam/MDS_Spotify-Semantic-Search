@@ -19,7 +19,7 @@ def run_sql_script(filename):
             if command.strip():
                 cursor.execute(command)
                 index += 1
-                if(index % 100 == 0):
+                if(index % 1000 == 0):
                     print(index)
  
         cnx.commit()    
@@ -30,4 +30,8 @@ def run_sql_script(filename):
         cursor.close()
         cnx.close()
 
+print("Running sql scripts...")
 run_sql_script('data/spotify_songs.sql')
+
+print("Running sql scripts one table")
+run_sql_script('data/spotify_songs_single_table.sql')
