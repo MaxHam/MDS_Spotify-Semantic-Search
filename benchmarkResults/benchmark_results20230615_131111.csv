@@ -1,0 +1,10 @@
+,id,database,avg_query_time,count_result,result,limit
+0,BM3,document,0.05296539374510758,10,"17, Chronic Sunshine, Cowboy, Ghetto Cowboy, Love Like Waves, My Fairy King - Remastered 2011, Narcos, Right Hand Man, Sound of da Police, Young Girl / I Really Like You",10
+1,BM3,sql,0.19154414958669805,0,,10
+2,BM3,vector,0.004684417123207822,10,"17, Bad Boys Running Wild, Lions in the Wild, Run To The Hills, Wanted Dead Or Alive, Wanted Dead Or Alive, Wild Horses, Wild Horses, Wild Horses - Sam Feldt Remix, Zebra",10
+3,BM3,document,0.052944394639926035,16,"17, Chronic Sunshine, Cowboy, Ghetto Cowboy, Love Like Waves, Money On My Mind, My Fairy King - Remastered 2011, Narcos, Narcos, Ohio - filous Remix",100
+4,BM3,sql,0.1992728616518434,0,,100
+5,BM3,vector,0.008848737080115824,100,"'39 - 2011 Mix, '39 - 2011 Mix, 17, Animal, Animal I Have Become, Animal Instinct, Back In the Saddle, Bad Boys Running Wild, Beautiful Creatures (feat. MAX), Beds Are Burning",100
+6,BM3,document,0.05411202794173733,16,"17, Chronic Sunshine, Cowboy, Ghetto Cowboy, Love Like Waves, Money On My Mind, My Fairy King - Remastered 2011, Narcos, Narcos, Ohio - filous Remix",1000
+7,BM3,sql,0.1922225683077704,0,,1000
+8,BM3,vector,0.0365505633095745,1000,"'39 - 2011 Mix, '39 - 2011 Mix, 14 Years, 17, 18 And Life, 18 and Life, 18 and Life, 1965, 1979, 1979 - Remastered 2012",1000

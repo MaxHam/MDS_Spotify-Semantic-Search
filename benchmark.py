@@ -79,7 +79,7 @@ def run_benchmark(query, benchmark_id, database, limit):
     print(f"Time for {database} database: {query_time}")
     return df
 
-def run_benchmark_sql(func, benchmark_id, database, limit, cursor, connection):
+def run_benchmark_sql(func, benchmark_id, database, limit, connection):
     try:
         query_time = aggregate_query_time(func)
 
@@ -116,12 +116,14 @@ def main(args):
         query = benchmark["query"]
         is_array = benchmark["is_array"]
         columns = benchmark["columns"]
-        print(f"-----------------------------------------------------------") 
-        print(f"{key}:") 
 
         for limit in limits:
+            print("-----------------------------------------------------------") 
+            print(f"{key} with limit {limit}")
+            print("-----------------------------------------------------------") 
+
             for database in databases:
-                print(f"Measuring benckmark for {database} database with limit {limit} ...") 
+                print(f"Measuring benckmark for {database} database ...") 
                 if database == "vector":
                     if key == 'BM5':
                         q = ( 
@@ -138,6 +140,9 @@ def main(args):
                             .get("Track", ["track_name"])
                             .with_near_text(nearText)
                         )
+                        if limit > 1:
+                            q = q.with_limit(limit)
+                        result = run_benchmark(query=q, benchmark_id=key, database=database, limit=limit)
                 elif database == "document":
                     withFilter = {
                         "operator": "Or",
@@ -148,14 +153,15 @@ def main(args):
                         .get("Track", ["track_name"])
                         .with_where(withFilter)
                     )
-                elif database == "sql":
-                    q = build_sql_query(query, columns = (columns if key=='BM4' else sql_columns), limit=limit, is_array=is_array)
-                    result = run_benchmark_sql(func=(lambda: executeSql(cursor, query = q)), benchmark_id=key, database=database, limit=limit, cursor=cursor, connection=cnx)
-                if database != "sql":        
                     if limit > 1:
                         q = q.with_limit(limit)
                     result = run_benchmark(query=q, benchmark_id=key, database=database, limit=limit)
+                elif database == "sql":
+                    q = build_sql_query(query, columns = (columns if key=='BM4' else sql_columns), limit=limit, is_array=is_array)
+                    result = run_benchmark_sql(func=(lambda: executeSql(cursor, query = q)), benchmark_id=key, database=database, limit=limit, connection=cnx)
+
                 df = pd.concat([df, result], ignore_index=True)
+            print("-----------------------------------------------------------") 
     save_results(df)
 
     cursor.close()
