@@ -13,7 +13,7 @@ example_vector = [-0.06430846, -0.24293041, 0.110439375, -0.100999914, 0.0962964
 sql_columns = ["track_name", "track_artist", "track_album_name", "lyrics", "playlist_genre", "playlist_subgenre"]
 columns = ["track_name", "artist_name", "album_name", "lyrics", "genre", "subgenre"]
 limits = [10, 100, 1000]
-databases = ["document", "sql", "vector"]
+databases = ["document", "sql_single_table", "sql", "vector"]
 benchmarks = {
     "BM1": { # Benchmark 1: Search for a single word in a single column
         "query": "love",
@@ -76,20 +76,25 @@ def run_benchmark(query, benchmark_id, database, limit):
     count = len(result["data"]["Get"]["Track"])
     result = get_track_names(sorted([t["track_name"] for t in result["data"]["Get"]["Track"]])[:10])
     df = pd.DataFrame({"id": benchmark_id, "database": database, "avg_query_time": query_time, "count_result": count, "result": result, "limit": limit}, index=[0])
-    print(f"Time for {database} database: {query_time}")
+    print(f"- Time for {database} database: {query_time}")
     return df
 
-def run_benchmark_sql(func, benchmark_id, database, limit, connection):
+def run_benchmark_sql(q, benchmark_id, database, limit):
     try:
-        query_time = aggregate_query_time(func)
+        cnx = mysql.connector.connect(user='root', password='root', host='127.0.0.1', database='spotifyDataset')
+        cursor = cnx.cursor()
 
-        result = func() 
-        connection.commit()
+        query_time = aggregate_query_time(func=(lambda: executeSql(cursor, query = q)))
+
+        result = executeSql(cursor, q)
+
+        cnx.close()
+
         count = len(result)
         result = get_track_names(sorted(t[0] for t in result)[:10])
         
         df = pd.DataFrame({"id": benchmark_id, "database": database, "avg_query_time": query_time, "count_result": count, "result": result , "limit": limit}, index=[0])
-        print(f"{benchmark_id}: Time for {database} database: {query_time}")
+        print(f"- Time for {database} database: {query_time}")
         return df
         
     except mysql.connector.Error as err:
@@ -106,8 +111,6 @@ def main(args):
 
     # init dbs
     weaviate_client = init_client()
-    cnx = mysql.connector.connect(user='root', password='root', host='127.0.0.1', database='spotifyDataset')
-    cursor = cnx.cursor()
 
     df = pd.DataFrame(columns=["id", "database", "avg_query_time", "count_result","result", "limit"])
 
@@ -158,7 +161,10 @@ def main(args):
                     result = run_benchmark(query=q, benchmark_id=key, database=database, limit=limit)
                 elif database == "sql":
                     q = build_sql_query(query, columns = (columns if key=='BM4' else sql_columns), limit=limit, is_array=is_array)
-                    result = run_benchmark_sql(func=(lambda: executeSql(cursor, query = q)), benchmark_id=key, database=database, limit=limit, connection=cnx)
+                    result = run_benchmark_sql(q, benchmark_id=key, database=database, limit=limit)
+                elif database == "sql_single_table":
+                    q = build_sql_query(query, columns = (columns if key=='BM4' else sql_columns), limit=limit, is_array=is_array, is_singelTable=True)
+                    result = run_benchmark_sql(q, benchmark_id=key, database=database, limit=limit)
 
                 df = pd.concat([df, result], ignore_index=True)
             print("-----------------------------------------------------------") 

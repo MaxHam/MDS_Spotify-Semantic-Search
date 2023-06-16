@@ -47,7 +47,7 @@ def add_limit (limit):
     
 
     
-def build_sql_query(query, columns, limit, is_array=False):
+def build_sql_query(query, columns, limit, is_array=False, is_singelTable=False):
     mul_query = []
     for column in columns:
         if is_array:
@@ -58,8 +58,13 @@ def build_sql_query(query, columns, limit, is_array=False):
         mul_query.append(q)
     where = " OR ".join(mul_query)
 
+    innerjoin = """
+    inner join artist on track.artist_id = artist.id
+inner join album on track.track_album_id = album.track_album_id
+inner join playlist on track.playlist_id = playlist.playlist_id"""
+
     final_sql = f"""SELECT track_name
-                FROM music_data
+                FROM {"music_data" if is_singelTable else "track"}{"" if is_singelTable else innerjoin}
                 WHERE {where}
                 {add_limit(limit)};"""
     return final_sql
