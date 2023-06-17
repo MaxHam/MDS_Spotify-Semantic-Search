@@ -4,10 +4,11 @@
         {
             "name": "track_name",
             "dataType": ["text"],
+            "tokenization": "word",
             "moduleConfig": {
                 "text2vec-contextionary": {
                 "skip": false,
-                "vectorizePropertyName": true
+                "vectorizePropertyName": false
                 }
             }
         },
@@ -24,40 +25,44 @@
         {
             "name": "artist_name",
             "dataType": ["text"],
+            "tokenization": "word",
             "moduleConfig": {
                 "text2vec-contextionary": {
                 "skip": false,
-                "vectorizePropertyName": true
+                "vectorizePropertyName": false
                 }
             }
         },
         {
             "name": "lyrics",
+            "tokenization": "word",
             "dataType": ["text"],
             "moduleConfig": {
                 "text2vec-contextionary": {
                 "skip": false,
-                "vectorizePropertyName": true
+                "vectorizePropertyName": false
                 }
             }
         },
         {
             "name": "subgenre",
+            "tokenization": "word",
             "dataType": ["text"],
             "moduleConfig": {
                 "text2vec-contextionary": {
                 "skip": false,
-                "vectorizePropertyName": true
+                "vectorizePropertyName": false
                 }
             }
         },
         {
             "name": "genre",
+            "tokenization": "word",
             "dataType": ["text"],
             "moduleConfig": {
                 "text2vec-contextionary": {
                 "skip": false,
-                "vectorizePropertyName": true
+                "vectorizePropertyName": false
                 }
             }
         },
@@ -203,11 +208,12 @@
         },
         {
             "name": "album_name",
+            "tokenization": "word",
             "dataType": ["text"],
             "moduleConfig": {
                 "text2vec-contextionary": {
                 "skip": false,
-                "vectorizePropertyName": true
+                "vectorizePropertyName": false
                 }
             }
         },
@@ -227,10 +233,9 @@
             "moduleConfig": {
                 "text2vec-contextionary": {
                 "skip": true,
-                "vectorizePropertyName": true
+                "vectorizePropertyName": false
                 }
             }
         }
-    ],
-    "text2vec-contextionary": "text2vec-contextionary"
+    ]
 }

@@ -1,5 +1,6 @@
 import weaviate
 import json
+from datetime import datetime, timezone
 
 classes= ['Track']#, 'Artist', 'Album']
 
@@ -7,24 +8,13 @@ def init_client():
     client = weaviate.Client(
         url="http://localhost:8081",  # Replace with your endpoint
     )
-
-    # Import class schemas
-    class_paths = ["schema/track_class.json"] #, "schema/artist_class.json", "schema/album_class.json"]
-
-    for path in class_paths:
-        with open(path, "r") as f:
-            class_obj = json.load(f)
-        # Create classes
-        try:
-            client.schema.create_class(class_obj)
-        except:
-            print(f"class {path} already exists")
     
     return client
 
-def delete_class(client, class_name="Songs"):
+def delete_class(client, class_name="Track"):
     try:
         client.schema.delete_class(class_name)
+        print(f"class {class_name} deleted")
     except:
         print(f"class {class_name} does not exist")
 
@@ -34,10 +24,29 @@ def read_data():
         data = json.load(f)
     return data
 
-def import_data(client, data):
-
+def create_schema(client, data):
     # flush the schema and data
-    client.schema.delete_all()
+    # client.schema.delete_all()
+    delete_class(client, "Track")
+
+       # Import class schemas
+    class_paths = ["schema/track_class.json"] #, "schema/artist_class.json", "schema/album_class.json"]
+
+    for path in class_paths:
+        with open(path, "r") as f:
+            class_obj = json.load(f)
+        # Create classes
+        try:
+            print(f"Create new class schema! {path}")
+            client.schema.create_class(class_obj)
+        except Exception as e:
+            print(e)
+
+def parse_date(date_str):
+    return datetime.strptime(date_str, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+
+
+def import_data(client, data):
 
     # Configure a batch 
     with client.batch as batch:
@@ -67,10 +76,10 @@ def import_data(client, data):
                 "duration_ms": d["duration_ms"],
                 "album_name": d["track_album_name"],
                 "album_id": d["track_album_id"],
-                "album_release_date": d["track_album_release_date"],
+                # "album_release_date": parse_date(d["track_album_release_date"]).isoformat(),
                 "artist_name": d["track_artist"]
                 }
-
+            
             # artist_properties = {
             #     "name": d["track_artist"]
             # }
@@ -88,6 +97,9 @@ def import_data(client, data):
 def main(args):
     client = init_client()
     data = read_data()
+    create_schema(client, data)
+    schema = client.schema.get()
+    print(schema)
     import_data(client, data)
 
 
