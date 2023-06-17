@@ -140,10 +140,12 @@ def main(args):
                             .get("Track", ["track_name"])
                             .with_near_text(nearText)
                         )
-                        if limit > 1:
-                            q = q.with_limit(limit)
-                        result = run_benchmark(query=q, benchmark_id=key, database=database, limit=limit)
+                    if limit > 1:
+                        q = q.with_limit(limit)
+                    result = run_benchmark(query=q, benchmark_id=key, database=database, limit=limit)
                 elif database == "document":
+                    if key == 'BM5':
+                        continue
                     withFilter = {
                         "operator": "Or",
                         "operands": get_operands(query, columns=columns, is_array=is_array)
@@ -157,6 +159,8 @@ def main(args):
                         q = q.with_limit(limit)
                     result = run_benchmark(query=q, benchmark_id=key, database=database, limit=limit)
                 elif database == "sql":
+                    if key == 'BM5':
+                        continue
                     q = build_sql_query(query, columns = (columns if key=='BM4' else sql_columns), limit=limit, is_array=is_array)
                     result = run_benchmark_sql(func=(lambda: executeSql(cursor, query = q)), benchmark_id=key, database=database, limit=limit, connection=cnx)
 
