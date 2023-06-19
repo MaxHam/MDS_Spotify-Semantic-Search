@@ -32,19 +32,16 @@ services:
     ports:
     - 9999:9999
   maria-db:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - db_data:/var/lib/mysql
-    restart: always
+    image: mariadb
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: spotifyDataset
+      MYSQL_DATABASE: mydatabase
       MYSQL_USER: root
       MYSQL_PASSWORD: root
+    volumes:
+    - db_data:/var/lib/mysql
     ports:
-      - "3306:3306"
+    - "3306:3306"
   webapp:
     build:
         context: ./webapp

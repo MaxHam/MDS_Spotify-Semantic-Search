@@ -9,9 +9,7 @@ We decided to build a music similarity search engine, where you can search for a
 - [Installation](#installation)
 - [Benchmark](#benchmark)
 - [Dataset](#dataset)
-- [Databases](#databases)
-- [Helpful](#helpful)
-- [Other interesting datasets](#other-interesting-datasets)
+- [Authors](#authors)
 
 # Requirements
 - Node.js
@@ -31,7 +29,7 @@ pip install -r requirements.txt
 python3 clean_data.py
 ```
 
-5. Create an `.env` file in the `webapp` directory with the following content. You need this to enable the Spotify API.
+5. Create an `.env` file in the `webapp` directory with the following content. You need this to enable the Spotify API. You need to set up a spotify application. Look [here](https://developer.spotify.com/documentation/web-api/concepts/apps) for more information.
 ```bash
 SPOTIFY_CLIENT_ID=your_spotify_client_id
 SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
