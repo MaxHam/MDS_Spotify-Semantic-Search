@@ -162,7 +162,7 @@ JOIN artist a2 ON a2.id = track.artist_id;"""
 
 
     # save json file
-    with open("data/spotify_songs.sql", "w", encoding="utf-16") as f:
+    with open("data/spotify_songs_subTables.sql", "w", encoding="utf-16") as f:
         f.write(sql)
 
 

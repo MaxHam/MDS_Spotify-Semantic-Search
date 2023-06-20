@@ -174,8 +174,8 @@ def main(args):
             print("-----------------------------------------------------------") 
     save_results(df)
 
-    cursor.close()
-    cnx.close()
+    # cursor.close()
+    # cnx.close()
 
 if __name__ == "__main__":
     import argparse
