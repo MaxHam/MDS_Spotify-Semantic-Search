@@ -36,7 +36,7 @@ def save_results(results):
     Save the results to a .csv file
     '''
     df = pd.DataFrame(results)
-    df.to_csv("benchmarkResults/benchmark_results" + datetime.now().strftime("%Y%m%d_%H%M%S") + ".csv")
+    df.to_csv("benchmark_results/benchmark_results" + datetime.now().strftime("%Y%m%d_%H%M%S") + ".csv")
 
 
 def add_limit (limit):

@@ -175,10 +175,7 @@ def main(args):
                 df = pd.concat([df, result], ignore_index=True)
             print("-----------------------------------------------------------") 
     save_results(df)
-
-    # cursor.close()
-    # cnx.close()
-
+    
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(

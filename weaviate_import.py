@@ -2,7 +2,7 @@ import weaviate
 import json
 from datetime import datetime, timezone
 
-classes= ['Track']#, 'Artist', 'Album']
+classes= ['Track']
 
 def init_client():
     client = weaviate.Client(
@@ -26,12 +26,10 @@ def read_data():
 
 def create_schema(client, data):
     # flush the schema and data
-    # client.schema.delete_all()
     delete_class(client, "Track")
 
-       # Import class schemas
-    class_paths = ["schema/track_class.json"] #, "schema/artist_class.json", "schema/album_class.json"]
-
+    # Import class schemas
+    class_paths = ["schema/track_class.json"]
     for path in class_paths:
         with open(path, "r") as f:
             class_obj = json.load(f)
@@ -80,21 +78,9 @@ def import_data(client, data):
                 "artist_name": d["track_artist"]
                 }
             
-            # artist_properties = {
-            #     "name": d["track_artist"]
-            # }
-
-            # album_properties = {
-            #     "name": d["track_album_name"],
-            #     "album_id": d["track_album_id"],
-            #     "releas_date": d["track_album_release_date"],
-            # }
-
             client.batch.add_data_object(track_properties, "Track")
-            # client.batch.add_data_object(artist_properties, "Artist")
-            # client.batch.add_data_object(album_properties, "Album")
 
-def main(args):
+def main():
     client = init_client()
     data = read_data()
     create_schema(client, data)
@@ -105,9 +91,4 @@ def main(args):
 
 
 if __name__ == "__main__":
-    import argparse
-    parser = argparse.ArgumentParser(
-        description="Import data for weaviate.")
-    args = parser.parse_args()
-
-    main(args)
+    main()

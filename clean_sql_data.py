@@ -63,7 +63,6 @@ CREATE TABLE music_data (
 
     sql_instert = """INSERT INTO music_data (id, track_id, track_name, track_artist, lyrics, track_popularity, track_album_id, track_album_name, track_album_release_date, playlist_name, playlist_id, playlist_genre, playlist_subgenre, danceability, energy, musicKey, loudness, mode, speechiness, acousticness, instrumentalness, liveness, valence, tempo, duration_ms, language) VALUES """
 
-    #df = df.head(10)
 
     for index, row in df.iterrows():
         #id,track_id,track_name,track_artist,lyrics,track_popularity,track_album_id,track_album_name,track_album_release_date,playlist_name,playlist_id,playlist_genre,playlist_subgenre,danceability,energy,key,loudness,mode,speechiness,acousticness,instrumentalness,liveness,valence,tempo,duration_ms,language
