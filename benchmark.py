@@ -12,7 +12,7 @@ example_vector = [-0.06430846, -0.24293041, 0.110439375, -0.100999914, 0.0962964
 
 sql_columns = ["track_name", "track_artist", "track_album_name", "lyrics", "playlist_genre", "playlist_subgenre"]
 columns = ["track_name", "artist_name", "album_name", "lyrics", "genre", "subgenre"]
-limits = [10, 100, 1000]
+limits = [10, 20, 30]
 databases = ["document", "sql_single_table", "sql", "vector"]
 benchmarks = {
     "BM1": { # Benchmark 1: Search for a single word in a single column
