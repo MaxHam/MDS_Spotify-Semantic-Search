@@ -1,16 +1,16 @@
 # Music Similarity Search
-This is a project for the "Modern Database Systems" lecture, held at the Technische Hochschule Köln. Aim of the project is to find a use case where modern NoSQL databases outperform SQL databases.
-We decided to build a music similarity search engine, where you can search for a song and get similar songs back. The similarity is based on the lyrics and the audio features of the song. The project is based on the [Spotify Dataset](https://www.kaggle.com/datasets/imuhammad/audio-features-and-lyrics-of-spotify-songs) from Kaggle.
 
 ## Table of contents
 - [Motivation](#motivation)
-- [Roadmap](#roadmap)
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Benchmark](#benchmark)
 - [Dataset](#dataset)
 - [Authors](#authors)
 
+# Motivation
+This is a project for the "Modern Database Systems" lecture, held at the Technische Hochschule Köln. Aim of the project is to find a use case where modern NoSQL databases outperform SQL databases.
+We decided to build a music similarity search engine, where you can search for a song and get similar songs back. The similarity is based on the lyrics and the audio features of the song. The project is based on the [Spotify Dataset](https://www.kaggle.com/datasets/imuhammad/audio-features-and-lyrics-of-spotify-songs) from Kaggle.
 # Requirements
 - Node.js
 - Docker
