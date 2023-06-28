@@ -43,7 +43,7 @@ benchmarks = {
         }
 }
 
-def aggregate_query_time(func, n=100):
+def aggregate_query_time(func, n=20):
     '''
     Aggregate the query time for a function
     '''
@@ -167,6 +167,8 @@ def main(args):
                     q = build_sql_query(query, columns = (columns if key=='BM4' else sql_columns), limit=limit, is_array=is_array)
                     result = run_benchmark_sql(q, benchmark_id=key, database=database, limit=limit)
                 elif database == "sql_single_table":
+                    if key == 'BM5':
+                        continue
                     q = build_sql_query(query, columns = (columns if key=='BM4' else sql_columns), limit=limit, is_array=is_array, is_singelTable=True)
                     result = run_benchmark_sql(q, benchmark_id=key, database=database, limit=limit)
 
