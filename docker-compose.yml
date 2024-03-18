@@ -9,7 +9,7 @@ services:
     - '8081'
     - --scheme
     - http
-    image: semitechnologies/weaviate:1.19.6
+    image: cr.weaviate.io/semitechnologies/weaviate:1.19.6
     ports:
     - 8081:8081
     restart: on-failure:0
